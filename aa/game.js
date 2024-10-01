@@ -126,7 +126,7 @@ function drawScore() {
     ctx.font = "32px 標楷體";
     ctx.fillStyle = "#FF0000";
     ctx.textAlign = "left";
-    ctx.fillText("已取得的台灣價值: " + score, 0, 50); // 在左上角顯示分數
+    ctx.fillText("已取得的台灣價值: " + score + " 點", 0, 50); // 在左上角顯示分數
 }
 
 // 繪製生命數
@@ -134,7 +134,7 @@ function drawLives() {
     ctx.font = "32px 標楷體";
     ctx.fillStyle = "#FF0000";
     ctx.textAlign = "left";
-    ctx.fillText("命數: " + lives, 0, 100); // 在左上角顯示生命數
+    ctx.fillText("你只能再浪費" + lives + "點台灣價值", 0, 100); // 在左上角顯示生命數
 }
 
 function draw() {
