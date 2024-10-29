@@ -53,3 +53,7 @@ input[name="field2"][type="radio"] {
 #sendout{
     position: relative;
 }
+
+#100{
+    color:red;
+}
