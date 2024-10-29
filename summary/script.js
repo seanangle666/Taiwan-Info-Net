@@ -12,25 +12,39 @@ $(document).ready(function () {
     }
     $("body").append("<p id=\"arrar\">hii</p>");
     setInterval(update, 20)
-    setInterval(function(e){
-        
+    setInterval(function (e) {
+
         let name = $("input[name='inp1']");
-        if(name.val() != ""){
-            let uuuu = Math.random()*1000
-            $("body").append("<p id=\"launch\" name='"+uuuu+"'>"+name.val()[0]+"</p>");
-            s.push([uuuu,$(name).offset().top+45,0,10,Math.random()*-2]);
+        if (name.val() != "") {
+            let uuuu = Math.random() * 1000
+            $("body").append("<p id=\"launch\" name='" + uuuu + "'>" + name.val()[0] + "</p>");
+            s.push([uuuu, $(name).offset().top + 45, 0, 10, Math.random() * -2]);
         }
         name.val(name.val().slice(1));
-        
+
     }, 50)
     $("#sendout").hover(
-        function() {
-            console.log("hbdwbhed");
-          $(this)
-          .css("top",Math.random()*200-100)
-          .css("left",Math.random()*200);
+        function () {
+            if (Math.random() < 0.7) {
+                $(this)
+                    .css("top", Math.random() * 200 - 100)
+                    .css("left", Math.random() * 200);
+            }
         }
-      );
+    );
+    $("#sendout").click(function () {
+        let tempalert = "";
+        if ($("input[name='inp1']").val() == "") {
+            tempalert = teamalert + "null";
+        } else {
+            tempalert = teamalert + "你的名字是" + $("input[name='inp1']").val();
+        }
+        if ($("input[name='field3'][type=\"radio\"]").first().prop('checked')) {
+            tempalert = teamalert + "，你確定你要報名志願役嗎？？";
+        }
+
+        alert(tempalert);
+    });
 });
 
 function update(e) {
@@ -38,14 +52,14 @@ function update(e) {
     $("#arrar")
         .css("left", Math.pow(Math.sin(i / 30), 2) * 100 + "%");
     $("input[name='inp1']")
-        .css("rotate", "x "+i * 9 % 360+"deg")
-        .css("rotate", "z "+-10+"deg");
+        .css("rotate", "x " + i * 9 % 360 + "deg")
+        .css("rotate", "z " + -10 + "deg");
     $("#sel1")
         .css("rotate", "y " + Math.pow(Math.sin(i / 100), 2) * 360 + "deg")
         .css("width", Math.pow(Math.sin(i / 7), 2) * 200 + 100 + "px")
         ;
     $("input[bruh]")
-        .css("rotate", "y " + i * 128 % 360+ "deg")
+        .css("rotate", "y " + i * 128 % 360 + "deg")
         .css("text-shadow", "1px 1px 5px black");
 
     $("div[ua]")
@@ -53,17 +67,17 @@ function update(e) {
         .css("rotate", (i * 1.4) % 360 + "deg")
         .css("font-size", Math.pow(Math.sin(i / 50), 2) * 10 + 10 + "px");
     for (let index = 0; index < s.length; index++) {
-        $("#launch[name='"+s[index][0]+"']").css("top",s[index][1]+"px");
-        $("#launch[name='"+s[index][0]+"']").css("left",s[index][3]+"px");
+        $("#launch[name='" + s[index][0] + "']").css("top", s[index][1] + "px");
+        $("#launch[name='" + s[index][0] + "']").css("left", s[index][3] + "px");
         s[index][2] += 0.3;
         s[index][1] += s[index][2];
         s[index][3] += s[index][4];
-        if(s[index][3] < 0){
-            s[index][4] = s[index][4]*-1;
+        if (s[index][3] < 0) {
+            s[index][4] = s[index][4] * -1;
             s[index][3] = 0;
         }
-        if(s[index][1] > $(window).height()-20){
-            $("#launch[name='"+s[index][0]+"']").remove();
+        if (s[index][1] > $(window).height() - 20) {
+            $("#launch[name='" + s[index][0] + "']").remove();
             s[index].pop();
         }
     }
@@ -81,7 +95,7 @@ function update(e) {
         }
         v = v.next();
     }
-    
+
     let w = $('input[name="field2"][type="radio"]').first();
     for (let index = 0; index < $('input[name="field2"][type="radio"]').length; index++) {
         if (w.prop('checked')) {
@@ -100,5 +114,5 @@ function update(e) {
         }
         w = w.next();
     }
-    
+
 }
