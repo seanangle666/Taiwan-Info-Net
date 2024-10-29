@@ -40,43 +40,41 @@ $(document).ready(function () {
             tempalert = tempalert + "你的名字是" + $("input[name='inp1']").val();
         }
         if ($("input[name='field3'][type=\"radio\"]").first().prop('checked')) {
-            tempalert = tempalert + "，你確定你要報名志願役嗎？？";
-        }
+            tempalert = tempalert + "，你確定你要報名志願役嗎？？"; let h = confirm(tempalert);
+            if (h) {
+                let ydwutf = Math.floor(Math.random() * 10);
+                for (let i = 0; i < ydwutf; i++) {
+                    let qqq = Math.floor(Math.random() * 5);
+                    switch (qqq) {
+                        case 0:
+                            h = confirm("你確定？？？")
+                            break;
+                        case 1:
+                            h = confirm("要確定喔？？？")
+                            break;
+                        case 2:
+                            h = confirm("要確定喔？？？")
+                            break;
+                        case 3:
+                            h = confirm("嗯嗯嗯嗯？？？")
+                            break;
+                        case 4:
+                            h = confirm("真的確定嗎？？？")
+                            break;
+                        default:
+                            break;
+                    }
 
-        let h = confirm(tempalert);
-        if (h) {
-            let ydwutf = Math.floor(Math.random() * 10);
-            for (let i = 0; i < ydwutf; i++) {
-                let qqq = Math.floor(Math.random() * 5);
-                switch (qqq) {
-                    case 0:
-                        h = confirm("你確定？？？")
+                    if (!h) {
+                        window.location.href = "https://rdrc.mnd.gov.tw/RdrcWeb/Schedule/Soldier";
                         break;
-                    case 1:
-                        h = confirm("要確定喔？？？")
-                        break;
-                    case 2:
-                        h = confirm("要確定喔？？？")
-                        break;
-                    case 3:
-                        h = confirm("嗯嗯嗯嗯？？？")
-                        break;
-                    case 4:
-                        h = confirm("真的確定嗎？？？")
-                        break;
-                    default:
-                        break;
+                    }
                 }
-
-                if (!h) {
-                    window.location.href = "https://rdrc.mnd.gov.tw/RdrcWeb/Schedule/Soldier";
-                    break;
-                }
+                window.location.href = "https://rdrc.mnd.gov.tw/RdrcWeb/Schedule/Soldier";
             }
-            window.location.href = "https://rdrc.mnd.gov.tw/RdrcWeb/Schedule/Soldier";
-        } else {
-            window.location.href = "https://rdrc.mnd.gov.tw/RdrcWeb/Schedule/Soldier";
         }
+        window.location.href = "https://rdrc.mnd.gov.tw/RdrcWeb/Schedule/Soldier";
+
     });
 });
 
