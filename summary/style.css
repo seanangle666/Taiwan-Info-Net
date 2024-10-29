@@ -1,28 +1,55 @@
-#arrar{
+@font-face {
+    font-family: "kaiu";
+    src: url('../kaiu.ttf');
+}
+
+* {
+    font-family: kaiu;
+}
+h1{
+    background-color: red;
+    
+}
+#arrar {
     border: 0px;
     position: absolute;
     left: 0%;
 }
-#sel1{
+
+#sel1 {
     width: 100px;
     rotate: x 90deg;
     rotate: y 0deg;
 }
-input[bruh]{
+
+input[bruh] {
     rotate: y 0deg;
 }
-div[ua]{
+
+div[ua] {
     text-shadow: 0px 5px 2px rgb(255, 221, 0);
 }
+
 input[name="field2"][type="checkbox"] {
     rotate: 0deg;
 }
+
+input[name='inp1']{
+    margin-bottom: 50px;
+    rotate: y 0deg;
+}
+
 input[name="field2"][type="radio"] {
     position: relative;
     top: 0px;
     left: 0px;
     font-size: 20px;
 }
-#launch{
+
+#launch {
     position: absolute;
+}
+
+#sendout{
+    position: relative;
 }
