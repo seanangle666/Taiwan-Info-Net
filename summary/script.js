@@ -62,7 +62,7 @@ function update(e) {
             s[index][4] = s[index][4]*-1;
             s[index][3] = 0;
         }
-        if(s[index][1] > 400){
+        if(s[index][1] > $(window).height()-20){
             $("#launch[name='"+s[index][0]+"']").remove();
             s[index].pop();
         }
