@@ -1,0 +1,21 @@
+.note {
+    height: 30px;
+    width: 100px;
+    background-color: #777;
+    border-radius: 7px;
+}
+
+#game-container {
+    display: flex;
+    justify-content: center;
+}
+
+#r1,
+#r2,
+#r3,
+#r4 {
+    display: inline-block;
+    background-color: #AAA;
+    width: 100px;
+    height: 500px;
+}
