@@ -2,14 +2,20 @@
     font-family: "kaiu";
     src: url('kaiu.ttf');
 }
-
+body{
+    background-color:red ;
+}
 * {
     font-family: kaiu;
 }
 
-h1 {
-    background-color: red;
-
+#tittle {
+    background-color: blue;
+    margin: 0px;
+    border: 10px;
+    border-style: solid;
+    border-color: transparent;
+    color :white;
 }
 
 #arrar {
@@ -30,7 +36,7 @@ input[bruh] {
 
 div[ua] {
     text-shadow: 0px 5px 2px rgb(255, 221, 0);
-    position: relative;
+    position: absolute;
     border: 200px 100px 200px 100px;
 }
 
@@ -57,7 +63,7 @@ input[name="field2"][type="radio"] {
 #sendout {
     position: relative;
 }
-
-#100 {
-    color: red;
+#myRange {
+    margin-top: 50px;
+    rotate: 60deg;
 }

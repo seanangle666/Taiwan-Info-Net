@@ -4,18 +4,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>台灣人民普查問卷</title>
+  <title>台灣人口普查問卷</title>
   <link rel="stylesheet" href="style.css">
   <script src="../jquery/jquery-3.7.1.js"></script>
   <script src="script.js"></script>
 </head>
 
 <body>
-  <h1>台灣人民普查問卷</h1>
-  <h2>填完問卷即可獲得台灣價值<span id="100">壹佰點</span>！！！</h2>
+  <div id="tittle">
+    
+    <h1>台灣人口普查問卷</h1>
+    <h2><i>填完問卷即可獲得台灣價值</i><span id="100"
+        style="color : red; text-shadow: 0px 0px 5px white; font-size: 50px;">壹佰點</span>！！！
+      </h2><a href="../" style="color: rgb(52, 52, 255); font-weight: bold;">回首頁</a>
+  </div>
+
   <div>
     你叫甚麼名字？？？？？？<br />
     <input name="inp1" type="text" size="50" placeholder="請輸入像是...呃...一點東西我猜？...呃？？？" />
+  </div>
+  <div>
+    你的年齡？？？<br/>
+    <input type="range" min="0" max="100" value="25" id="myRange">
+    年齡：<span id="agge"></span>
   </div>
   <div>
     你的性別<br />
@@ -36,7 +47,7 @@
     並且擁有公開透明的升遷管道、各種進修資源，
     以及婚喪生育補助可以申請，歡迎大家報考志願役。
   </div>
-  <div>
+  <div style="margin-top: 100px;">
     你最愛的政黨是甚麼?<br />
     <select id="sel1">
       <option value="0">-請選擇-</option>

@@ -2,8 +2,10 @@ let i = 0;
 let q = [];
 let r = [];
 let s = [];
+let sliderval;
 $(document).ready(function () {
-
+    sliderval = [$("#myRange"), 0, 0, false];
+    console.log(sliderval[0].val());
     for (let index = 0; index < $('input[name="field2"][type="checkbox"]').length; index++) {
         q.push(0);
     }
@@ -53,10 +55,10 @@ $(document).ready(function () {
                             h = confirm("要確定喔？？？")
                             break;
                         case 2:
-                            h = confirm("要確定喔？？？")
+                            h = confirm("你要確欸？？？")
                             break;
                         case 3:
-                            h = confirm("嗯嗯嗯嗯？？？")
+                            h = confirm("Are you serious???")
                             break;
                         case 4:
                             h = confirm("真的確定嗎？？？")
@@ -76,9 +78,35 @@ $(document).ready(function () {
         window.location.href = "https://rdrc.mnd.gov.tw/RdrcWeb/Schedule/Soldier";
 
     });
+    $("#myRange").focus(function () {
+        sliderval[3] = true;
+        console.log(sliderval[0].val());
+        
+    });
+    $("#myRange").blur(function () {
+        sliderval[1] = 0;
+        console.log(sliderval[0].val());
+        sliderval[2] = parseFloat(sliderval[0].val());
+        console.log(sliderval[2]);
+        console.log(sliderval[1]);
+        sliderval[3] = false;
+    });
 });
 
 function update(e) {
+    $("#agge").text(sliderval[0].val());
+    if (!sliderval[3]) {
+        console.log([sliderval[0].val(),sliderval[1],sliderval[2],sliderval[3]]);
+        sliderval[1] += 0.1;
+        sliderval[2] += sliderval[1];
+        sliderval[2] = parseFloat(sliderval[2]);
+        sliderval[0].val(sliderval[2]);
+        if(sliderval[2] > sliderval[0].attr("max")){
+            sliderval[2] = sliderval[0].attr("max");
+            sliderval[1] = sliderval[1]*-0.7;
+        }
+    }
+
     i++;
     $("#arrar")
         .css("left", Math.pow(Math.sin(i / 30), 2) * 100 + "%");
@@ -94,7 +122,7 @@ function update(e) {
         .css("text-shadow", "1px 1px 5px black");
 
     $("div[ua]")
-        .css("text-shadow", Math.sin(i / 3) * 5 + "px " + Math.cos(i / 3) * 5 + "px 5px rgb(255, 221, 0)")
+        .css("text-shadow", Math.sin(i / 3) * 5 + "px " + Math.cos(i / 3) * 5 + "px 1px rgb(255, 221, 0)")
         .css("rotate", (i * 1.4) % 360 + "deg")
         .css("font-size", Math.pow(Math.sin(i / 50), 2) * 10 + 10 + "px");
     for (let index = 0; index < s.length; index++) {
