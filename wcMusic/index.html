@@ -11,13 +11,18 @@
 </head>
 
 <body>
-    <input type="range" max="200" min="0" value="10" id="speeed">
-    <div id ="jdline" style="
+    <button id="start-but">START</button>
+    <audio controls id="music" hidden>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+    <input type="range" max="300" min="0" value="10" id="speeed">
+    <div id="jdline" style="
     position: absolute;
     left: 0px;
-    height: 15px; 
-    width: 50px; 
-    background-color: black;
+    height: 25px;
+    width: 100%;
+    background-image: linear-gradient(0deg ,rgb(64, 105, 255),rgb(84, 178, 255) );
+    opacity: 0.5;
     "></div>
     <div id="game-container">
         <div id="r1">
@@ -33,7 +38,10 @@
 
         </div>
     </div>
-    <p class = "combo">COMBO</br><span id = "combo"></span></p>
+    <p class="combo">COMBO</br><span id="combo"></span></p>
+    <p class="jud"></p>
+    <p class="score">SCORE:<span id="score">0</span></p>
+    <p class="fast-late"></p>
 </body>
 
 </html>

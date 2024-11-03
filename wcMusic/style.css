@@ -1,6 +1,25 @@
+body{
+    background-image:linear-gradient(20deg, #a4edff, #85b8ff);
+    background-size: 100% 110%;
+}
+
+#start-but{
+    margin-left: calc(50% - 150px/2);
+    margin-top: 300px;
+    position:absolute;
+    box-shadow: 0px 2px 2px black;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    height: 60px;
+    width: 150px;
+    z-index: 400;
+    
+}
+
 .note {
     background-image: linear-gradient(20deg, #87D4FF, #1575FF);
-    height: 30px;
+    height: 25px;
     width: 100px;
     border-radius: 7px;
     position: absolute;
@@ -26,7 +45,7 @@
     background-image: linear-gradient(75deg, rgba(55, 112, 255, 0.699), rgb(80, 176, 255));
     width: 100px;
     height: 550px;
-    box-shadow: 0px 0px 4px darkblue;
+    box-shadow: 0px 0px 8px rgb(0, 53, 199);
 }
 
 .combo {
@@ -42,6 +61,50 @@
     color: white;
     text-shadow: 0px 0px 3px white;
     z-index: 300;
+}
+
+.score {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: absolute;
+    top: 0px;
+    left: 20px;
+    width: 30%;
+    text-align: left;
+    height: 15px;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+    text-shadow: 0px 0px 3px white;
+    z-index: 300;
+}
+
+.jud {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: absolute;
+    top: 400px;
+    left: 0px;
+    width: 100%;
+    text-align: center;
+    height: 100px;
+    font-weight: bold;
+    font-size: 25px;
+    z-index: 300;
+    opacity: 1;
+}
+
+.fast-late {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: absolute;
+    top: 380px;
+    left: 0px;
+    width: 100%;
+    text-align: center;
+    height: 100px;
+    font-weight: bold;
+    font-size: 20px;
+    text-shadow: 0px 0px  5px white;
+    z-index: 300;
+    opacity: 1;
 }
 
 .hold {
