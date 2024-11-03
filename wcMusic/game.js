@@ -27,7 +27,8 @@ $(document)
         $("#jdline")
             .css("top", $("#r1").offset().top + 500 - noteHeight / 2);
         for (let i = 0; i < 10000; i++) {
-            noteAdd(Math.floor(Math.random() * 0.999999 * 4), i, i * 60 / 260, Math.round(Math.random()) * 0);
+            noteAdd(Math.floor(Math.random() * 0.999999 * 4), i*2-1, i * 60 / 260, Math.round(Math.random()) * 0);
+            noteAdd(Math.floor(Math.random() * 0.999999 * 4), i*2, i * 60 / 260, Math.round(Math.random()) * 0);
         }
         $('#start-but').click(function () {
             console.log("yee");
@@ -45,19 +46,19 @@ $(document)
         if (e.keyCode == 40) {
             t -= 50;
         }
-        if (!keys[ka] && keys[ka] != null) {
+        if (ka in keys) {
             console.log(ka + " down");
             keys[ka] = true;
             setTimeout(function () {
                 console.log(ka + " down delay");
                 keys[ka + "_delay"] = true;
             }
-                , 14);
+                , 15);
         }
 
     })
     .keyup(function (e) {
-        if (keys[e.key] && keys[e.key] != null) {
+        if (e.key in keys) {
             console.log(e.key + " up");
             keys[e.key] = false;
             keys[e.key + "_delay"] = false;
@@ -148,7 +149,7 @@ function update() {
                     $(".jud").text("MISS")
                         .css("color", "lightgray")
                         .css("text-shadow", " 0px 0px 5px black");
-                    $(".fast-late").text("LATE");
+                    $(".fast-late").text("LATE").css("color","red");
                     judAni = 1;
                     $("#" + noteprp[0]).remove();
                     $("#combo").text(combo);
