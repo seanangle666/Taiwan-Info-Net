@@ -1,4 +1,5 @@
-let note = [];
+
+let notes = [];
 let score = 0;
 let startTime = 0;
 let sp = $("#speed").val() * 10;
@@ -14,46 +15,50 @@ let keys = {
     "f": false,
     "j": false,
     "k": false,
-    "d_delay": false,
-    "f_delay": false,
-    "j_delay": false,
-    "k_delay": false
+    "d_jud": false,
+    "f_jud": false,
+    "j_jud": false,
+    "k_jud": false
 };
 let t = Date.now();
 let noteHeight = 25;
+let noteIdCounter = 0; // 用來自動生成 id 的全域變數
+let songProgress = 0;
 
 $(document)
     .ready(function () {
+        const lanes = [$("#r1"), $("#r2"), $("#r3"), $("#r4")];
         $("#jdline")
-            .css("top", $("#r1").offset().top + 500 - noteHeight / 2);
-        for (let i = 0; i < 10000; i++) {
-            noteAdd(Math.floor(Math.random() * 0.999999 * 4), i*2-1, i * 60 / 260, Math.round(Math.random()) * 0);
-            noteAdd(Math.floor(Math.random() * 0.999999 * 4), i*2, i * 60 / 260, Math.round(Math.random()) * 0);
+            .css("top", lanes[0].offset().top + 500 - noteHeight / 2);
+        for (let i = 0; i < 100; i++) {
+            noteAdd(0, i * 60 / 260, Math.round(Math.random()) * 0);
+            noteAdd(1, i * 60 / 260, Math.round(Math.random()) * 0);
+            noteAdd(2, i * 60 / 260, Math.round(Math.random()) * 0);
+            noteAdd(3, i * 60 / 260, Math.round(Math.random()) * 0);
         }
         $('#start-but').click(function () {
             console.log("yee");
             startTime = Date.now() + 2000;
-            setInterval(update, 15);
-            setTimeout(function () { $("#music")[0].play() }, 2000);
+            requestAnimationFrame(update);
+            setTimeout(() => $("#music")[0].play(), 2000);
             $(this).remove();
         });
     })
     .keydown(function (e) {
-        let ka = e.key;
-        if (e.keyCode == 38) {
-            t += 50;
-        }
-        if (e.keyCode == 40) {
-            t -= 50;
-        }
-        if (ka in keys) {
-            console.log(ka + " down");
-            keys[ka] = true;
-            setTimeout(function () {
-                console.log(ka + " down delay");
-                keys[ka + "_delay"] = true;
+        if (e.key in keys) {
+            console.log(e.key + " down");
+            keys[e.key] = true;
+            if (!keys[e.key + "_jud"]) {
+                const laneIndex = keyset.indexOf(e.key);
+                const firstNote = notes.find(n => n.lane === laneIndex && !n.hit && !n.miss);
+                if (firstNote != null) {
+                    let t_s = (Date.now() - startTime) / 1000 - firstNote.ti;
+                    if (Math.abs(t_s) <= 0.5 && firstNote) {
+                        hit(firstNote, t_s * 1000);
+                    }
+                }
+                keys[e.key + "_jud"] = true;
             }
-                , 15);
         }
 
     })
@@ -61,125 +66,133 @@ $(document)
         if (e.key in keys) {
             console.log(e.key + " up");
             keys[e.key] = false;
-            keys[e.key + "_delay"] = false;
+            keys[e.key + "_jud"] = false;
         }
 
     });
 
-function noteAdd(r, id, ti, hold) {
-    note.push([id, r, ti, hold, false]);
+function noteAdd(lane, ti, hold) {
+    const id = noteIdCounter++; // 自動分配唯一 id，並自增
+    notes.push({ id, lane, ti, hold, hit: false, miss: false });
 }
 
+
 function update() {
+    if (StartIndex < notes.find(n => !(n.hit || n.miss)).id) {
+        StartIndex = notes.find(n => !(n.hit || n.miss)).id;
+    }
     $(".combo").css("font-size", 25 + comboAni * 5 + "px");
     $(".jud")
         .css("font-size", 25 + judAni * 5 + "px")
         .css("opacity", Math.log(judAni * 9 + 1));
     $(".fast-late")
         .css("opacity", Math.log(judAni * 9 + 1));
+    $("#progress").val(songProgress / 400);
     comboAni = comboAni * 0.95;
     judAni = judAni * 0.85;
     sp = $("#speeed").val() * 10;
-    let firstNote = [find($("#r" + 1)), find($("#r" + 2)), find($("#r" + 3)), find($("#r" + 4))];
-    for (let index = StartIndex; index < (StartIndex + 200 > note.length ? note.length : StartIndex + 200); index++) {
-        let noteprp = note[index];
-        let noteid = noteprp[0];
-        let notepos = noteprp[1];
-        let notehold = noteprp[3];
-        let lane = $("#r" + (notepos + 1));
-        let t_s = (Date.now() - startTime) / 1000 - noteprp[2];
-        if ($("#" + noteid).length == 0 && !noteprp[4]) {
-            lane.append("<div class=\"note hid\" id=\"" + noteid +
-                "\"><div class = \"hold\" id = \"h_" + noteid
+    for (let index = StartIndex; index < (StartIndex + 200 > notes.length ? notes.length : StartIndex + 200); index++) {
+        let note = notes[index];
+        let lane = $("#r" + (note.lane + 1));
+        let t_s = (Date.now() - startTime) / 1000 - note.ti;
+        if ($("#" + note.id).length == 0 && !(note.hit || note.miss)) {
+            lane.append("<div class=\"note hid\" id=\"" + note.id +
+                "\"><div class = \"hold\" id = \"h_" + note.id
                 + "\"></div></div>");
         }
 
-        if (!$("#" + noteid).hasClass("hit")) {
+        if (!(note.hit || note.miss)) {
             if (t_s * sp > -500 && t_s * sp < 50) {
-                $("#" + noteid)
+                $("#" + note.id)
                     .removeClass("hid")
                     .css("z-index", StartIndex + 200 - index);
 
-            } else if (notehold != 0) {
-                $("#" + noteid)
+            } else if (note.hold != 0) {
+                $("#" + note.id)
                     .removeClass("hid")
                     .css("z-index", StartIndex + 200 - index);
             } else {
-                $("#" + noteid)
+                $("#" + note.id)
                     .addClass("hid");
             }
-            $("#" + noteid)
+            $("#" + note.id)
                 .css("top", t_s * sp + noteHeight / 2 + 500 + "px");
-            $("#h_" + noteid)
-                .css("height", (notehold * sp) + "px")
-                .css("top", (notehold * sp * -1) + noteHeight / 2 + "px");
+            $("#h_" + note.id)
+                .css("height", (note.hold * sp) + "px")
+                .css("top", (note.hold * sp * -1) + noteHeight / 2 + "px");
             if (autoplay) {
                 if (t_s >= 0) {
-                    if (notehold == 0) {
-                        hit(noteprp, 0);
-                    } else if (t_s - notehold > 0) {
-                        hit(noteprp, 0);
+                    if (note.hold == 0) {
+                        hit(note, 0);
+                    } else if (t_s - note.hold > 0) {
+                        hit(note, 0);
                     } else {
                         $("#" + noteid)
                             .css("top", 0 + noteHeight / 2 + 500 + "px");
                         $("#h_" + noteid)
-                            .css("height", ((t_s - notehold) * sp * -1) + "px")
-                            .css("top", ((t_s - notehold) * sp) + noteHeight / 2 + "px");
+                            .css("height", ((t_s - note.hold) * sp * -1) + "px")
+                            .css("top", ((t_s - note.hold) * sp) + noteHeight / 2 + "px");
                     }
-                }
-            } else {
-                if (Math.abs(t_s) <= 0.5 && firstNote[notepos] != null) {
-                    if (firstNote[notepos].attr("id") == noteid && keys[keyset[notepos]]) {
-                        if (notehold == 0) {
-                            if (!keys[keyset[notepos] + "_delay"]) {
-                                hit(noteprp, t_s * 1000);
-                            }
-                        } else if (t_s - notehold > 0) {
-                            hit(noteprp, t_s * 1000);
-                        } else {
-                            $("#" + noteid)
-                                .css("top", 0 + noteHeight / 2 + 500 + "px");
-                            $("#h_" + noteid)
-                                .css("height", ((t_s - notehold) * sp * -1) + "px")
-                                .css("top", ((t_s - notehold) * sp) + noteHeight / 2 + "px");
-                        }
-                    }
-                } else if (t_s > 0.5 && !noteprp[4]) {
-                    combo = "";
-                    $(".jud").text("MISS")
-                        .css("color", "lightgray")
-                        .css("text-shadow", " 0px 0px 5px black");
-                    $(".fast-late").text("LATE").css("color","red");
-                    judAni = 1;
-                    $("#" + noteprp[0]).remove();
-                    $("#combo").text(combo);
-                    StartIndex = getnote();
-                    noteprp[4] = true;
                 }
             }
+            /* else {
+                if (Math.abs(t_s) <= 0.5 && firstNote[note.lane] != null) {
+                    if (firstNote[note.lane].attr("id") == note.id && keys[keyset[note.lane]]) {
+                        if (note.hold == 0) {
+                            if (!keys[keyset[note.lane] + "_delay"]) {
+                                hit(note, t_s * 1000);
+                            }
+                        } else if (t_s - note.hold > 0) {
+                            hit(note, t_s * 1000);
+                        } else {
+                            $("#" + note.id)
+                                .css("top", 0 + noteHeight / 2 + 500 + "px");
+                            $("#h_" + note.id)
+                                .css("height", ((t_s - note.hold) * sp * -1) + "px")
+                                .css("top", ((t_s - note.hold) * sp) + noteHeight / 2 + "px");
+                        }
+                    }
+                } else */
+            if (t_s > 0.5 && !note.hit) {
+                combo = "";
+                $(".jud").text("MISS")
+                    .css("color", "lightgray")
+                    .css("text-shadow", " 0px 0px 5px black");
+                $(".fast-late").text("LATE").css("color", "red");
+                judAni = 1;
+                $("#" + note.id).remove();
+                $("#combo").text(combo);
+                StartIndex = notes.find(n => !(n.hit || n.miss)).id;
+                console.log(StartIndex);
+                songProgress++;
+                note.miss = true;
+            }
+            //}
 
         }
     }
+    requestAnimationFrame(update);
 }
 
-function hit(noteprp, jud) {
-    $("#" + noteprp[0])
+function hit(note, jud) {
+    $("#" + note.hit)
         .removeClass("note")
         .removeClass("hid")
         .css("top", 0 + noteHeight / 2 + 500 + "px");
-    $("#h_" + noteprp[0])
+    $("#h_" + note.id)
         .removeClass("hold");
-    if (!noteprp[4]) {
+    if (!note.hit) {
         if (Math.abs(jud) < 80) {
             $(".jud").text("\!PERFECT\!")
                 .css("color", "white")
                 .css("text-shadow", " 0px 0px 7px rgb(255, 213, 47)");
-            $("#" + noteprp[0])
+            $("#" + note.id)
                 .addClass("hit");
             $(".fast-late").text("");
             comboAni = 1;
             score += 50;
             combo++;
+            note.hit = true;
         } else if (Math.abs(jud) < 185) {
             $(".jud").text("GREAT")
                 .css("color", "rgb(118, 244, 255)")
@@ -187,11 +200,12 @@ function hit(noteprp, jud) {
             $(".fast-late")
                 .text((Math.sign(jud) < 0 ? "FAST " : "LATE ") + Math.floor(jud * -1) + "ms")
                 .css("color", Math.sign(jud) < 0 ? "blue" : "red");
-            $("#" + noteprp[0])
+            $("#" + note.id)
                 .addClass("hit");
             comboAni = 1;
             score += 35;
             combo++;
+            note.hit = true;
         } else if (Math.abs(jud) < 350) {
             $(".jud").text("BRUH")
                 .css("color", "aquamarine")
@@ -199,11 +213,12 @@ function hit(noteprp, jud) {
             $(".fast-late")
                 .text((Math.sign(jud) < 0 ? "FAST " : "LATE ") + Math.floor(jud * -1) + "ms")
                 .css("color", Math.sign(jud) < 0 ? "blue" : "red");
-            $("#" + noteprp[0])
+            $("#" + note.id)
                 .addClass("hit");
             comboAni = 1;
             score += 15;
             combo++;
+            note.hit = true;
         } else {
             $(".jud").text("MISS")
                 .css("color", "lightgray")
@@ -212,34 +227,29 @@ function hit(noteprp, jud) {
                 .text((Math.sign(jud) < 0 ? "FAST " : "LATE ") + Math.floor(jud * -1) + "ms")
                 .css("color", Math.sign(jud) < 0 ? "blue" : "red");
             combo = "";
+            note.miss = true;
         }
         judAni = 1;
-        StartIndex = getnote();
+        songProgress++;
+        StartIndex = notes.find(n => !(n.hit || n.miss)).id;
         $("#combo").text(combo);
         $("#score").text(score);
     }
-    noteprp[4] = true;
-    setTimeout(function () {
-        $("#" + noteprp[0]).remove();
-    }, 500);
+    if (!note.miss) {
+        setTimeout(function () {
+            $("#" + note.id).remove();
+        }, 500);
+    } else {
+        $("#" + note.id).remove();
+    }
+
 }
 
 function getnote() {
-    for (let i = 0; i < note.length; i++) {
-        if (!note[i][4]) {
+    for (let i = 0; i < notes.length; i++) {
+        if (!notes[i].hit) {
             return i;
         }
-    }
-    return -1;
-}
-
-function find(lane) {
-    let a = lane.children();
-    for (let i = 0; i < lane.children().length; i++) {
-        if (!a.hasClass("hit") && a.hasClass("note")) {
-            return a.first();
-        }
-        a = a.nextAll();
     }
     return -1;
 }
