@@ -5,40 +5,71 @@
   <meta charset="utf-8" />
   <title>愛台灣小遊戲</title>
   <style>
-    * {
+    body {
       padding: 0;
       margin: 0;
+      overflow: hidden;
+      background: red;
     }
 
     canvas {
-      position: relative;
-      top: 50px;
-      background-image: url(../aa/item/Background.jpg);
+      position: absolute;
+      max-width: 600px;
+      max-height: 450px;
+      width: 100vw;
+      height: 75vw;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
       display: block;
-      margin: 0 auto;
+      margin: 0;
     }
 
     .back-home {
-      font-family:"標楷體";
+      left: 0;
+      width: 100%;
+      position: absolute;
+      font-family: "標楷體";
       display: block;
       text-align: center;
-      margin-top: 60px; /* 調整這裡來控制間距 */
+      bottom: 30px;
+      /* 調整這裡來控制間距 */
       font-size: 20px;
+    }
+
+    .render-background {
+      position: absolute;
+      max-width: 600px;
+      max-height: 450px;
+      width: 100vw;
+      height: 75vw;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: block;
+      object-fit: cover;
+      margin: 0;
     }
   </style>
 </head>
 
-<body bgcolor="FF0000">
-  <img id="back" src="../aa/item/Background.jpg" hidden="true">
-  <img id="imgg" src="../aa/item/man.png" width="50" hidden="true">
-  <img class="drop" id="bubble" src="../aa/item/bubble.jpg" width="50" hidden="true">
-  <img class="drop" id="tofu" src="../aa/item/tofu.jpg" width="50" hidden="true">
-  <img class="drop" id="chicken" src="../aa/item/chicken.png" width="50" hidden="true">
-  <canvas id="myCanvas" width="900" height="600"></canvas>
+<body>
+  <div hidden="true">
+    <img id="man" src="item/man.png">
+    <img id="bubble" src="item/bubble.jpg">
+    <img id="tofu" src="item/tofu.jpg">
+    <img id="chicken" src="item/chicken.png">
+  </div>
+  <img class="render-background" src="item/Background.jpg" alt="background">
+  <canvas id="render"></canvas>
+
+  <div style="position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:10;">
+    <button id="leftBtn">←</button>
+    <button id="rightBtn">→</button>
+  </div>
 
   <!-- 把連結移到畫布正下方 -->
-  <a href="../index.html" class="back-home">回首頁</a>
-
+  <a href="../" class="back-home">回首頁</a>
   <script src="game.js"></script>
 </body>
 
