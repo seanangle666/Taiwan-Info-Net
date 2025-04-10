@@ -50,18 +50,49 @@
       object-fit: cover;
       margin: 0;
     }
+
+    #start-btn {
+      position: absolute;
+      z-index: 3;
+      max-width: 200px;
+      width: 30vw;
+      left: calc(50% - 200px);
+      top: 350px;
+      animation-name: pop;
+      animation-duration: 0.5s;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+    }
+
+    @keyframes pop {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.4);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
   </style>
 </head>
 
 <body>
   <div hidden="true">
-    <img id="man" src="item/man.png">
-    <img id="bubble" src="item/bubble.jpg">
-    <img id="tofu" src="item/tofu.jpg">
-    <img id="chicken" src="item/chicken.png">
+    <img id="theend" class="width10" src="item/theend.png">
+    <img id="endGame" class="width10" src="item/endGame.png">
+    <img id="t" class="width10" src="item/t.png">
+    <img id="man" class="width10" src="item/man.png">
+    <img id="bubble" class="width10" src="item/bubble.jpg">
+    <img id="tofu" class="width10" src="item/tofu.jpg">
+    <img id="chicken" class="width10" src="item/chicken.png">
   </div>
   <img class="render-background" src="item/Background.jpg" alt="background">
   <canvas id="render"></canvas>
+  <img id="start-btn" src="item/start_button.png">
 
   <div style="position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:10;">
     <button id="leftBtn">←</button>
