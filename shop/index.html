@@ -1,0 +1,287 @@
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>shop</title>
+</head>
+<style>
+    body {
+        background: url("../imgs/flag.png");
+    }
+
+    #TWtitle {
+        color: blue;
+        text-shadow: 5px 5px 10px white;
+        background-image: linear-gradient(40deg, red, yellow, lime, green, blue, purple, red, yellow, lime, green, blue, purple);
+        background-size: 200% 100%;
+        background-position: right;
+        animation: gradientMove 1s linear infinite;
+    }
+
+    @keyframes gradientMove {
+        0% {
+            background-position: left;
+        }
+
+        100% {
+            background-position: right;
+        }
+    }
+
+    @keyframes swing {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        33% {
+            transform: rotate(1deg) scale(1.05);
+        }
+
+        66% {
+            transform: rotate(-1deg) scale(1.05);
+        }
+
+        100% {
+            transform: rotate(0deg) scale(1.0);
+        }
+    }
+
+    #nav {
+        background: white;
+        display: flex;
+        flex-direction: row;
+        left: 0px;
+        width: 100%;
+        font-family: '細明體';
+    }
+
+    #nav span {
+        margin: 0 10px;
+    }
+
+    #side-nav {
+        position: absolute;
+        margin-top: 50px;
+        background: white;
+        display: flex;
+        flex-direction: column;
+        left: 0px;
+        width: 200px;
+        font-family: '細明體';
+    }
+
+    #side-nav ul {
+        list-style-type: square;
+        padding: 0 0 0 20px;
+    }
+
+    #side-nav a {
+        text-decoration: none;
+        color: black;
+    }
+
+    #side-nav a:hover {
+        font-size: 125%;
+        text-decoration: underline;
+    }
+
+    #main-content {
+        margin-left: 200px;
+        color: yellow;
+        background: red;
+        rotate: 0deg;
+        width: calc(100% - 200px - 80px);
+        animation: swing 1s ease-in-out infinite;
+        font-family: '標楷體';
+        font-style: italic;
+    }
+
+    #item-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 10px;
+        margin-left: 200px;
+        background: white;
+        width: calc(100% - 200px);
+        font-family: '標楷體';
+    }
+
+    .item {
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+        height: 300px;
+    }
+
+    .item img {
+        width: 200px;
+        height: 200px;
+    }
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const items = [
+            {
+                picture: "imgs/taiwan_chicken_steak.png",
+                name: "台灣雞排", price: 888,
+                description: "美味的台灣雞排"
+            },
+            {
+                picture: "imgs/bubble_tea.webp",
+                name: "台灣珍奶", price: 66,
+                description: "香濃的台灣珍珠奶茶"
+            },
+            {
+                picture: "imgs/small_goodz.jpg",
+                name: "台灣小物", price: 33,
+                description: "可愛的台灣小物件"
+            },
+            {
+                picture: "imgs/buy_taiwan_flag.jpg",
+                name: "台灣國旗", price: 66,
+                description: "象徵台灣的國旗"
+            },
+            {
+                picture: "imgs/taiwan_peripherals.jpg",
+                name: "周邊", price: 888888,
+                description: "各種周邊商品"
+            },
+            {
+                picture: "imgs/tsmc.webp",
+                name: "台積電", price: 31120000000000,
+                description: "？？？？？？"
+            }
+        ];
+
+        const itemList = document.getElementById("item-list");
+        itemList.innerHTML = "";
+        items.forEach(item => {
+            const container = document.createElement("div");
+            const listItem = document.createElement("h3");
+            const itemDescription = document.createElement("div");
+            const itemImage = document.createElement("img");
+            let price = item.price;
+            function formatChineseNumber(num) {
+                const digits = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
+                if (num === 0) return digits[0];
+                
+                let result = "";
+                let remain = num;
+
+                // 處理兆
+                if (remain >= 1000000000000) {
+                    let zhao = Math.floor(remain / 1000000000000);
+                    result += convertUnderTenThousand(zhao) + "兆";
+                    remain = remain % 1000000000000;
+                }
+                
+                // 處理億
+                if (remain >= 100000000) {
+                    let yi = Math.floor(remain / 100000000);
+                    result += convertUnderTenThousand(yi) + "億";
+                    remain = remain % 100000000;
+                }
+                
+                // 處理萬
+                if (remain >= 10000) {
+                    let wan = Math.floor(remain / 10000);
+                    result += convertUnderTenThousand(wan) + "萬";
+                    remain = remain % 10000;
+                }
+                
+                // 處理萬以下
+                if (remain > 0) {
+                    result += convertUnderTenThousand(remain);
+                }
+                
+                function convertUnderTenThousand(num) {
+                    if (num === 0) return "";
+                    let str = "";
+                    
+                    // 千
+                    if (num >= 1000) {
+                        let qian = Math.floor(num / 1000);
+                        str += digits[qian] + "千";
+                        num = num % 1000;
+                    }
+                    
+                    // 百
+                    if (num >= 100) {
+                        let bai = Math.floor(num / 100);
+                        str += digits[bai] + "百";
+                        num = num % 100;
+                    }
+                    
+                    // 十
+                    if (num >= 10) {
+                        let shi = Math.floor(num / 10);
+                        if (shi === 1 && str === "") {
+                            str += "十"; // 開頭的十不加"一"
+                        } else {
+                            str += digits[shi] + "十";
+                        }
+                        num = num % 10;
+                    }
+                    
+                    // 個位
+                    if (num > 0) {
+                        str += digits[num];
+                    }
+                    
+                    return str;
+                }
+                
+                return result;
+            }
+            price = formatChineseNumber(price);
+            itemImage.src = item.picture;
+            itemImage.alt = item.name;
+            container.classList.add("item");
+            listItem.textContent = `${item.name} - ${price}元`;
+            itemDescription.textContent = item.description;
+            container.appendChild(itemImage);
+            container.appendChild(listItem);
+            container.appendChild(itemDescription);
+            itemList.appendChild(container);
+        });
+    });
+</script>
+
+<body>
+    <h1>
+        <div style="font-family:標楷體;" id="TWtitle">
+            <b><i>歡迎光臨~台灣購物網~~~</i></b>
+        </div>
+    </h1>
+    <nav id="nav">
+        <a href="index.html">首頁</a>
+        <span>|</span>
+        <a href="about.html">關於我們</a>
+        <span>|</span>
+        <a href="contact.html">聯絡我們</a>
+        <span>|</span>
+        <a href="products.html">產品</a>
+        <span>|</span>
+        <a href="services.html">服務</a>
+    </nav>
+    <img src="../imgs/love_taiwan.png" alt="我愛台灣" style="position: absolute;width: 200px;">
+    <nav id="side-nav">
+        <ul>
+            <li><a href="taiwan-chicken-steak.html">台灣雞排</a></li>
+            <li><a href="taiwan-bubble-tea.html">台灣珍奶</a></li>
+            <li><a href="taiwan-small-goods.html">台灣小物</a></li>
+            <li><a href="taiwan-flag.html">台灣國旗</a></li>
+            <li><a href="taiwan-peripherals.html">周邊</a></li>
+        </ul>
+    </nav>
+    <div id="main-content">
+        <h2>最新消息</h2>
+        <marquee scrollamount="10">歡迎來到台灣購物網！我們提供最新的台灣商品資訊，讓您隨時掌握購物動態。</marquee>
+    </div>
+    <div id="item-list">
+        <h2>最新商品</h2>
+        <p>稍等一下，商品資訊即將更新...</p>
+    </div>
+</body>
+
+</html>
