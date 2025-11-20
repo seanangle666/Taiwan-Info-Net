@@ -18,7 +18,7 @@
       max-height: 450px;
       width: 100vw;
       height: 75vw;
-      top: 10px;
+      top: 0;
       left: 50%;
       transform: translateX(-50%);
       display: block;
@@ -43,6 +43,20 @@
       max-height: 450px;
       width: 100vw;
       height: 75vw;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      display: block;
+      object-fit: cover;
+      margin: 0;
+    }
+
+    #cont {
+      position: absolute;
+      max-width: 600px;
+      max-height: 450px;
+      width: 100vw;
+      height: 75vw;
       top: 10px;
       left: 50%;
       transform: translateX(-50%);
@@ -52,12 +66,11 @@
     }
 
     #start-btn {
-      position: absolute;
+      position: relative;
+      top: 80%;
+      left: 10%;
       z-index: 3;
-      max-width: 200px;
-      width: 30vw;
-      left: calc(50% - 200px);
-      top: 350px;
+      width: 25%;
       animation-name: pop;
       animation-duration: 0.5s;
       animation-iteration-count: infinite;
@@ -81,7 +94,7 @@
 </head>
 
 <body>
-  <div hidden="true">
+  <div hidden="true" style="display:none;">
     <img id="theend" class="width10" src="item/theend.png">
     <img id="endGame" class="width10" src="item/endGame.png">
     <img id="t" class="width10" src="item/t.png">
@@ -90,14 +103,17 @@
     <img id="tofu" class="width10" src="item/tofu.jpg">
     <img id="chicken" class="width10" src="item/chicken.png">
   </div>
-  <img class="render-background" src="item/Background.jpg" alt="background">
-  <canvas id="render"></canvas>
-  <img id="start-btn" src="item/start_button.png">
-
-  <div style="position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:10;">
-    <button id="leftBtn">←</button>
-    <button id="rightBtn">→</button>
+  <div id="cont">
+    <img class="render-background" src="item/Background.jpg" alt="background">
+    <canvas id="render"></canvas>
+    <img id="start-btn" src="item/start_button.png">
+    <div style="position:fixed; bottom:-20px; left:50%; transform:translateX(-50%); z-index:10;">
+      <button id="leftBtn">←</button>
+      <button id="rightBtn">→</button>
+    </div>
   </div>
+
+
 
   <!-- 把連結移到畫布正下方 -->
   <a href="../" class="back-home">回首頁</a>

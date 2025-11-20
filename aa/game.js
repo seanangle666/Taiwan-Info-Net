@@ -35,6 +35,8 @@ let lastTime = performance.now(); // 初始化時間
 let spawnTimer = 0; // 用來控制生成間隔（以秒為單位）
 let start = false;
 
+const winScore = 1000;
+
 document.addEventListener('keydown', e => {
     if (e.key === 'ArrowLeft') leftPressed = true;
     if (e.key === 'ArrowRight') rightPressed = true;
@@ -86,9 +88,9 @@ function update(currentTime) {
                 0, 0, w, h);
             r.font = "bold italic 64px 標楷體";
             r.fillStyle = 'red';
-            let text = '失敗了〜〜〜〜', text2 = '';
+            let text = '失敗了〜〜〜〜';
             r.fillText(text, 100, 200)
-        } else if (player.score >= 1000) {
+        } else if (player.score >= winScore) {
             r.clearRect(0, 0, w, h);
             r.drawImage(images.endGame,
                 0, 0, w, h);
@@ -143,6 +145,7 @@ function update(currentTime) {
             r.fillStyle = gradient;
             r.fillText(`你再掉${player.hp}次就會被遣返回大陸`, 0, 20);
             r.fillText(`台灣價值：${player.score}`, 0, 50);
+            r.fillText(`還需要${winScore - player.score}完成挑戰`, 0, 80);
 
             items.forEach(item => {
                 r.drawImage(images[item.type], item.x, item.y, item.width, item.height);
@@ -159,7 +162,7 @@ function update(currentTime) {
         r.lineWidth = 5;
         r.strokeStyle = 'black';
         let text = '哈囉，我是Ai~臺灣先生〜〜',
-            text2 = '你要跟我一起賺台灣價值嗎〜 ？',
+            text2 = '你要跟我一起挑戰賺台灣價值嗎〜 ？',
             text3 = '馬上按下開始吧〜〜〜〜';
         r.fillStyle = 'yellow';
         r.strokeText(text, 250, 180 - 100);

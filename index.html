@@ -1,27 +1,47 @@
 <!DOCTYPE html>
+
 <head>
     <title>台灣價值資訊網</title>
     <meta charset="UTF-8">
     <link rel="icon" href="imgs/favicon.ico" type="image/x-icon" />
-    
+
     <style>
-        nav {
+        @font-face {
+            font-family: "kai";
+            src: url("fonts/TW-Kai-98_1.ttf");
+        }
+
+        @font-face {
+            font-family: "sung";
+            src: url("fonts/TW-Sung-98_1.ttf");
+        }
+
+        body {
+            font-family: 'kai';
+        }
+
+        #nav {
             position: absolute;
             left: 0px;
             width: 200px;
-            font-family: '細明體';
+            font-family: 'sung';
+            background-color: crimson;
+            color: black;
+            font-family: 'sung';
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #nav img{
+            width: 100%;
+            height: 50px;
         }
 
         section {
             /* position is static by default */
             margin-left: 200px;
-        }
-
-        nav {
-            background-color: crimson;
-            color: black;
-            font-family: '細明體';
-            font-weight: bold;
         }
 
         @keyframes blink {
@@ -49,14 +69,14 @@
 
         #TWtitle {
             text-shadow: 5px 5px 10px white;
-            background-image: linear-gradient(40deg, red, yellow, blue,purple,red);
+            background-image: linear-gradient(40deg, red, yellow, blue, purple, red);
         }
     </style>
 </head>
 
 <body background="imgs/flag.png" text="0000FF">
     <h1>
-        <div style="font-family:標楷體;" id="TWtitle">
+        <div id="TWtitle">
             <b><i>歡迎光臨~台灣價值資訊網~~~</i></b>
         </div>
     </h1>
@@ -64,7 +84,7 @@
         <source src="media/good.mp3" type="audio/mpeg">
     </video> -->
 
-    <nav>
+    <nav id="nav">
         <ul>
             <li><a href="shop/">購買台灣雞排！！</a></li>
             <li><a href="shop/">購買台灣珍奶！！</a></li>
@@ -80,7 +100,7 @@
     </nav>
     <section>
         <marquee scrollamount="10"><i>
-                <div style="font-family:細明體;">
+                <div style="font-family:sung;">
                     <font size=5>
                         <font color="#0000C0">台</font>
                         <font color="#0013AD">灣</font>
@@ -113,10 +133,10 @@
                 <font class="highlight2" color="#CCFFCC">黨</font>
             </div>
         </font>
-        <div style="font-family:細明體;" class="highlight2">
+        <div style="font-family:sung;" class="highlight2">
             <p
-            style="background-image: linear-gradient(45deg, cyan, blue);color: transparent;background-clip: text;background-size: 45%;">
-            我 愛 國 民 黨</p>
+                style="background-image: linear-gradient(45deg, cyan, blue);color: transparent;background-clip: text;background-size: 45%;">
+                我 愛 國 民 黨</p>
         </div>
 
         <iframe width="560" height="315" src="https://www.youtube.com/embed/japMUo-VJBE?si=UY9ohJ_bFuFOtwnu"
@@ -125,5 +145,5 @@
             referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         <img src="imgs/nice.png">
     </section>
-    <p style="color:white;text-align: center;">非許公角角版權所有，未經授權即可轉載</p>
+    <p style="color:gray;text-align: center; background: white; width: 100%; height: 30px;">非許公覺爵版權所有，未經授權即可轉載</p>
 </body>
