@@ -1,0 +1,135 @@
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>購物車</title>
+    <style>
+        body { font-family: "Microsoft JhengHei", Arial, sans-serif; background: #f7f9fc; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 18px; border-radius: 10px; box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+        h1 { margin-top: 0; }
+        .cart-item { display: flex; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
+        .cart-item img { width: 80px; height: 80px; object-fit: cover; border-radius: 6px; background: #fafafa; }
+        .cart-item .meta { flex: 1; }
+        .cart-item .meta h3 { margin: 0 0 6px 0; font-size: 18px; }
+        .cart-item .meta p { margin: 0; color: #666; font-size: 14px; }
+        .cart-item .actions { text-align: right; }
+        .btn { display:inline-block; padding:8px 12px; border-radius:8px; border: none; cursor:pointer; font-weight:600; }
+        .btn-clear { background:#f44336; color:white; }
+        .btn-checkout { background:#1e90ff; color:white; }
+        .btn-remove { background:#ff6b6b; color:white; border:none; padding:6px 8px; border-radius:6px; }
+        #total { font-size:20px; font-weight:700; }
+        .empty { text-align:center; color:#888; padding:40px 0; }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>購物車</h1>
+        <div id="cart-items"></div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px;">
+            <div>
+                <button id="clear-cart" class="btn btn-clear">清空購物車</button>
+            </div>
+            <div style="text-align:right">
+                <div>總計：<span id="total">0</span> 元</div>
+                <div style="margin-top:8px"><button id="checkout" class="btn btn-checkout">前往結帳</button></div>
+            </div>
+        </div>
+        <div style="margin-top:12px;text-align:right"><a href="index.html">繼續購物</a></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function loadCart() {
+                try {
+                    const raw = localStorage.getItem('shopCart');
+                    return raw ? JSON.parse(raw) : [];
+                } catch (e) {
+                    console.error('讀取購物車失敗', e);
+                    return [];
+                }
+            }
+
+            function saveCart(items) {
+                try { localStorage.setItem('shopCart', JSON.stringify(items)); } catch(e){ console.error(e); }
+            }
+
+            let items = loadCart();
+            const container = document.getElementById('cart-items');
+
+            function formatPrice(item) {
+                return item.discount ? Math.round(item.price * item.discount) : item.price;
+            }
+
+            function render() {
+                container.innerHTML = '';
+                if (!items || items.length === 0) {
+                    container.innerHTML = '<div class="empty">購物車目前為空</div>';
+                    document.getElementById('total').textContent = '0';
+                    return;
+                }
+
+                let total = 0;
+                items.forEach((item, idx) => {
+                    const displayPrice = formatPrice(item);
+                    total += displayPrice;
+
+                    const el = document.createElement('div');
+                    el.className = 'cart-item';
+                    el.innerHTML = `
+                        <img src="${item.picture || '../imgs/placeholder.png'}" alt="${item.name}">
+                        <div class="meta">
+                            <h3>${item.name}</h3>
+                            <p>${item.description || ''}</p>
+                        </div>
+                        <div style="width:140px;text-align:right">
+                            <div>價格：${displayPrice} 元</div>
+                            <div style="margin-top:8px"><button class="btn-remove" data-idx="${idx}">移除</button></div>
+                        </div>
+                    `;
+                    container.appendChild(el);
+                });
+
+                document.getElementById('total').textContent = total;
+
+                // attach remove handlers
+                Array.from(document.querySelectorAll('.btn-remove')).forEach(btn => {
+                    btn.addEventListener('click', function () {
+                        const idx = Number(this.getAttribute('data-idx'));
+                        if (!Number.isNaN(idx)) {
+                            if (confirm('移除此商品？')) {
+                                items.splice(idx, 1);
+                                saveCart(items);
+                                render();
+                            }
+                        }
+                    });
+                });
+            }
+
+            document.getElementById('clear-cart').addEventListener('click', function () {
+                if (confirm('確定要清空購物車嗎？')) {
+                    items = [];
+                    saveCart(items);
+                    render();
+                }
+            });
+
+            document.getElementById('checkout').addEventListener('click', function () {
+                const total = items.reduce((sum, it) => sum + (it.discount ? Math.round(it.price * it.discount) : it.price), 0);
+                if (items.length === 0) {
+                    alert('購物車為空');
+                    return;
+                }
+                alert('示範：前往結帳（總計 ' + total + ' 元）');
+                // 實作：跳轉到真正的結帳頁面或送出訂單
+            });
+
+            render();
+        });
+    </script>
+</body>
+
+</html>

@@ -11,6 +11,16 @@
         src: url("../fonts/Doll.ttf") format("truetype");
     }
 
+    @font-face {
+        font-family: "kai";
+        src: url("../fonts/TW-Kai-98_1.ttf");
+    }
+
+    @font-face {
+        font-family: "sung";
+        src: url("../fonts/TW-Sung-98_1.ttf");
+    }
+
     body {
         background: url("../imgs/flag.png");
     }
@@ -84,7 +94,7 @@
         flex-direction: row;
         left: 0px;
         width: 100%;
-        font-family: '細明體';
+        font-family: 'sung';
     }
 
     #nav span {
@@ -99,7 +109,7 @@
         flex-direction: column;
         left: 0px;
         width: 200px;
-        font-family: '細明體';
+        font-family: 'sung';
     }
 
     #side-nav ul {
@@ -135,7 +145,7 @@
         margin-left: 200px;
         background: white;
         width: calc(100% - 200px);
-        font-family: '標楷體';
+        font-family: 'kai';
     }
 
     .item {
@@ -182,6 +192,47 @@
         display: inline-block;
     }
 
+    .buy-button {
+        position: relative;
+        width: 150px;
+        display: inline-block;
+        padding: 10px 16px;
+        font-size: 15px;
+        font-weight: 600;
+        font-family: "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
+        color: #ffffff;
+        background: linear-gradient(180deg,
+                rgba(255, 255, 255, 0.7) 0%,
+                rgba(255, 255, 255, 0.3) 49%,
+                rgba(255, 255, 255, 0) 50%),
+            linear-gradient(180deg,
+                rgb(18, 186, 127) 20%,
+                rgb(44, 236, 143) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(30, 255, 98, 0.294), inset 0 -2px 0 rgba(0, 0, 0, 0.08);
+        cursor: pointer;
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+        transition: transform 0.14s ease, box-shadow 0.14s ease, background 0.14s ease, filter 0.14s ease;
+        margin-top: 8px;
+        outline: none;
+    }
+
+    .buy-button:hover {
+        filter: brightness(1.05);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 8px rgba(98, 255, 106, 0.44), inset 0 -2px 0 rgba(0, 0, 0, 0.06);
+    }
+
+    .buy-button:active {
+        transform: translateY(-1px);
+        box-shadow: 0 0 6px rgba(0, 255, 21, 0.165), inset 0 2px 4px rgba(0, 0, 0, 0.22);
+    }
+
+    /*.buy-button:focus {
+        box-shadow: none;
+    }*/
+
     #uselessRobotIcon {
         display: block;
         position: fixed;
@@ -204,7 +255,7 @@
         height: 100px;
     }
 
-    #uselessRobotIcon:hover + #q{
+    #uselessRobotIcon:hover+#q {
         display: block;
     }
 </style>
@@ -382,6 +433,46 @@
                 discount: 0.01
             },
         ];
+        const shopCart = {
+            items: [],
+            addItem(item) {
+                this.items.push(item);
+                console.log(`購物車已新增商品：${item.name}`);
+                this.save();
+            },
+            removeItem(index) {
+                this.items.splice(index, 1);
+                this.save();
+            },
+            clear() {
+                this.items = [];
+                this.save();
+            },
+            getTotal() {
+                return this.items.reduce((total, item) => total + (item.discount ? Math.round(item.price * item.discount) : item.price), 0);
+            },
+            save() {
+                try {
+                    localStorage.setItem('shopCart', JSON.stringify(this.items));
+                } catch (e) {
+                    console.error('儲存購物車失敗', e);
+                }
+            },
+            load() {
+                try {
+                    const raw = localStorage.getItem('shopCart');
+                    if (raw) {
+                        this.items = JSON.parse(raw);
+                    }
+                } catch (e) {
+                    console.error('讀取購物車失敗', e);
+                    this.items = [];
+                }
+            }
+        };
+
+        // 讀取本機儲存的購物車資料（若有）
+        shopCart.load();
 
         const itemList = document.getElementById("item-list");
         itemList.innerHTML = "";
@@ -494,6 +585,25 @@
             container.appendChild(listItem);
             container.appendChild(itemPrice);
             container.appendChild(itemDescription);
+            // 顯示的價格（若有折扣則顯示折後價）
+            let displayPrice = item.discount ? Math.round(price * item.discount) : price;
+
+            const buyBtn = document.createElement('button');
+            buyBtn.textContent = '購買';
+            buyBtn.className = 'buy-button';
+            buyBtn.setAttribute('data-name', item.name);
+            buyBtn.setAttribute('data-price', displayPrice);
+            buyBtn.addEventListener('click', function () {
+                if (confirm(`確認購買 ${item.name} 嗎？價格：${displayPrice} 元`)) {
+                    alert(`已將${item.name}加入購物車`);
+                    shopCart.addItem(item);
+                    // 若要導向結帳頁面，請取消下一行註解並修改為實際結帳頁
+                    // window.location.href = 'checkout.html';
+                }
+            });
+
+            container.appendChild(buyBtn);
+
             itemList.appendChild(container);
         });
     });
@@ -503,7 +613,7 @@
     <img id="uselessRobotIcon" src="../aa/item/man.png"></img>
     <img id="q" src="imgs/question.png"></img>
     <h1>
-        <div style="font-family:標楷體;" id="TWtitle">
+        <div style="font-family:kai;" id="TWtitle">
             <b><i>歡迎光臨~台灣購物網~~~</i></b>
         </div>
     </h1>
@@ -517,6 +627,8 @@
         <a href="products.html">產品</a>
         <span>|</span>
         <a href="services.html">服務</a>
+        <span>|</span>
+        <a href="cart.html">購物車</a>
     </nav>
     <img src="../imgs/love_taiwan.png" alt="我愛台灣" style="position: absolute;width: 200px;">
     <nav id="side-nav">
