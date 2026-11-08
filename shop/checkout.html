@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台灣價值安全結帳中心</title>
+    <style>
+        @font-face {
+            font-family: "kai";
+            src: url("../fonts/TW-Kai-98_1.ttf");
+        }
+
+        @font-face {
+            font-family: "sung";
+            src: url("../fonts/TW-Sung-98_1.ttf");
+        }
+
+        body {
+            font-family: "kai", "Microsoft JhengHei", Arial, sans-serif;
+            background: url("../imgs/flag.png");
+            padding: 20px;
+            color: #0000FF;
+        }
+
+        @keyframes blink {
+            50% {
+                visibility: hidden;
+            }
+        }
+
+        .blink-text {
+            animation: 0.8s blink infinite steps(1);
+            color: #FF0000;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border: 5px double #008000;
+            /* 民主綠雙線框 */
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            margin-top: 0;
+            font-family: 'sung', serif;
+            text-align: center;
+            color: red;
+            text-shadow: 3px 3px 6px white;
+            background-image: linear-gradient(40deg, green, yellow, red, blue, green);
+            background-size: 200% 100%;
+            padding: 12px;
+            border-radius: 5px;
+            border: 2px inset #FFF;
+        }
+
+        h2 {
+            font-family: 'sung', serif;
+            border-bottom: 2px solid #FF0000;
+            padding-bottom: 6px;
+            color: #B22222;
+        }
+
+        .section {
+            background: rgba(230, 245, 255, 0.7);
+            border: 2px dashed #005f61;
+            padding: 15px;
+            margin-bottom: 18px;
+            border-radius: 6px;
+        }
+
+        /* 付款方式選項 */
+        .payment-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #FFF;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #CCC;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .payment-option:hover {
+            border-color: #FF0000;
+            background: #FFFEE0;
+        }
+
+        .payment-option input {
+            transform: scale(1.3);
+        }
+
+        .payment-label {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .payment-desc {
+            font-size: 13px;
+            color: #666;
+            margin-left: 5px;
+        }
+
+        /* 答題免單區域 */
+        #game-area {
+            background: #FFFEE0;
+            border: 3px double #FF8C00;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .quiz-option {
+            display: block;
+            background: #FFF;
+            border: 2px solid #008000;
+            padding: 8px;
+            margin: 8px auto;
+            max-width: 400px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #008000;
+        }
+
+        .quiz-option:hover {
+            background: #E8F5E9;
+            transform: scale(1.02);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 18px;
+            font-family: "kai";
+            box-shadow: 2px 2px 0px #000;
+            border: 2px solid #000;
+        }
+
+        .btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: none;
+        }
+
+        .btn-submit {
+            background: #ff0000;
+            color: #fff;
+            border: 2px solid #ffe600;
+            width: 100%;
+            font-size: 22px;
+            margin-top: 10px;
+        }
+
+        #total-display {
+            font-size: 24px;
+            font-weight: 900;
+            color: #ff0000;
+        }
+
+        #original-total {
+            text-decoration: line-through;
+            color: #888;
+            font-size: 18px;
+            margin-right: 10px;
+            display: none;
+        }
+
+        .back-link {
+            font-size: 16px;
+            font-weight: bold;
+            color: #005f61;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🇹🇼 台灣價值安全結帳中心 🇹🇼</h1>
+        <div style="text-align: center; margin-bottom: 15px;">
+            <span class="blink-text">🔒 正在使用 民主防護加密連線 (無華為、無中資) 🔒</span>
+        </div>
+
+        <!-- 1. 訂單明細 -->
+        <div class="section">
+            <h2>📦 您的愛國加值清單</h2>
+            <div id="checkout-list" style="max-height: 150px; overflow-y: auto; margin-bottom: 10px;"></div>
+            <div style="text-align: right; font-size: 18px; font-weight: bold;">
+                台灣價值總計：
+                <span id="original-total">0元</span>
+                <span id="total-display">0</span> 元
+            </div>
+        </div>
+
+        <!-- 2. 免單挑戰 -->
+        <div class="section" style="border: 3px dashed #FF8C00;">
+            <h2 style="color: #FF8C00; border-color: #FF8C00;">🎁 每日限一次：回答問題免單！</h2>
+            <div id="game-area">
+                <p style="font-weight: bold; font-size: 16px;">💡 證明你的台灣價值！答對此題，本單立刻免費（0元）！</p>
+                <button id="start-quiz-btn" class="btn" style="background: #FF8C00; color: white;">🔥 開始挑戰 (今日剩 1
+                    次)</button>
+                <div id="quiz-box" style="display: none; margin-top: 15px;">
+                    <p id="quiz-question" style="font-size: 18px; font-weight: bold; color: #B22222;"></p>
+                    <div id="quiz-options"></div>
+                </div>
+                <p id="quiz-status" style="margin-top: 10px; font-weight: bold; display: none;"></p>
+            </div>
+        </div>
+
+        <!-- 3. 付款方式 (假的) -->
+        <div class="section">
+            <h2>💳 請選擇台灣價值付款方式 (愛國安全)</h2>
+            <form id="payment-form">
+                <label class="payment-option">
+                    <input type="radio" name="payment" value="taiwan_pay" checked>
+                    <div>
+                        <span class="payment-label">台灣 Value Pay</span>
+                        <span class="payment-desc">(推薦：每次付款自動加值 5% 台灣價值)</span>
+                    </div>
+                </label>
+                <label class="payment-option">
+                    <input type="radio" name="payment" value="gdp">
+                    <div>
+                        <span class="payment-label">用愛發電點數卡</span>
+                        <span class="payment-desc">(以台灣強韌心防折抵，1心防折 1元)</span>
+                    </div>
+                </label>
+                <label class="payment-option">
+                    <input type="radio" name="payment" value="patriotic_card">
+                    <div>
+                        <span class="payment-label">民主防衛聯名卡</span>
+                        <span class="payment-desc">(終身回饋：中共同路人辨識點數)</span>
+                    </div>
+                </label>
+                <label class="payment-option">
+                    <input type="radio" name="payment" value="spirit">
+                    <div>
+                        <span class="payment-label">精神在地協力支付</span>
+                        <span class="payment-desc">(免掏卡，只需在心裡大喊「我愛台灣」三遍即可完成扣款)</span>
+                    </div>
+                </label>
+            </form>
+        </div>
+
+        <!-- 4. 送出按鈕 -->
+        <button id="submit-btn" class="btn btn-submit">🇹🇼 確認儲值，送出愛國訂單！ 🇹🇼</button>
+
+        <div style="margin-top:20px; text-align:center;">
+            <a class="back-link" href="cart.html">🔙 返回購物車調整</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let cartItems = [];
+            let totalAmount = 0;
+            let isFree = false; // 是否免單
+
+            // 讀取購物車資料
+            try {
+                const raw = localStorage.getItem('shopCart');
+                cartItems = raw ? JSON.parse(raw) : [];
+            } catch (e) {
+                console.error(e);
+            }
+
+            // 計算價格
+            function formatPrice(item) {
+                return item.discount ? Math.round(item.price * item.discount) : item.price;
+            }
+
+            // 渲染訂單清單
+            const listContainer = document.getElementById('checkout-list');
+            if (cartItems.length === 0) {
+                listContainer.innerHTML = '<div style="color:red; text-align:center;">目前沒有任何台灣價值待結帳！</div>';
+                document.getElementById('submit-btn').disabled = true;
+                document.getElementById('start-quiz-btn').disabled = true;
+            } else {
+                cartItems.forEach(item => {
+                    const price = formatPrice(item);
+                    totalAmount += price;
+                    const div = document.createElement('div');
+                    div.style.display = 'flex';
+                    div.style.justify = 'space-between';
+                    div.style.padding = '4px 0';
+                    div.style.borderBottom = '1px dashed #CCC';
+                    div.innerHTML = `<span>🌿 ${item.name}</span><span>${price} 元</span>`;
+                    listContainer.appendChild(div);
+                });
+            }
+            updateTotalDisplay();
+
+            function updateTotalDisplay() {
+                const display = document.getElementById('total-display');
+                if (isFree) {
+                    document.getElementById('original-total').style.display = 'inline';
+                    document.getElementById('original-total').textContent = totalAmount + '元';
+                    display.textContent = '0 (已觸發免單神蹟！🎉)';
+                } else {
+                    document.getElementById('original-total').style.display = 'none';
+                    display.textContent = totalAmount;
+                }
+            }
+
+            /* ==========================================
+               回答問題免單 (每日一次) 邏輯
+               ========================================== */
+            const startBtn = document.getElementById('start-quiz-btn');
+            const quizBox = document.getElementById('quiz-box');
+            const quizQuestion = document.getElementById('quiz-question');
+            const quizOptions = document.getElementById('quiz-options');
+            const quizStatus = document.getElementById('quiz-status');
+
+            // 惡搞台灣價值問答庫
+            const quizBank = [
+                {
+                    q: "「大冰奶」在台灣防衛體系中扮演什麼角色？",
+                    a: [
+                        "Ａ. 戰略級強效腸胃通暢劑，提升國人代謝率",
+                        "Ｂ. 具有匿蹤功能的隱形燃料",
+                        "Ｃ. 其實是早餐店阿姨的溫柔問候"
+                    ],
+                    correct: 0,
+                    correctMsg: "正確！大冰奶一出，誰與爭鋒！肚子立刻有感！免單通過！",
+                    wrongMsg: "猜錯了！你真的有在台灣生活過嗎？這可是全民皆知的都市傳說！"
+                },
+                {
+                    q: "如果路上有人大喊「對不起，時空背景不同」，他最可能在做什麼？",
+                    a: [
+                        "Ａ. 施展高級防禦辯護法術",
+                        "Ｂ. 穿越時空的科幻演練",
+                        "Ｃ. 忘記帶鑰匙在自言自語"
+                    ],
+                    correct: 0,
+                    correctMsg: "完全正確！「時空背景不同之術」乃防禦至寶。免單通關！",
+                    wrongMsg: "錯！時空背景真的不同了，連這題你都答錯，台灣價值不及格喔！"
+                },
+                {
+                    q: "在台灣，當遇到困難或需要安全感時，最適合搭配哪種食物？",
+                    a: [
+                        "Ａ. 認真吃一塊比臉大、剛出爐的民主雞排",
+                        "Ｂ. 喝一杯沒有珍珠的奶茶",
+                        "Ｃ. 吃一盤不加辣的臭豆腐"
+                    ],
+                    correct: 0,
+                    correctMsg: "答對了！民主雞排有強大的心靈防護網！恭喜免單！",
+                    wrongMsg: "唉，看來你還需要多吃幾塊雞排，多讀民主大補帖！"
+                }
+            ];
+
+            // 檢查今天是否挑戰過
+            function checkTodayPlayed() {
+                const lastPlayedDate = localStorage.getItem('lastQuizDate');
+                const today = new Date().toLocaleDateString('zh-TW'); // 取得本地日期，例如 2026/11/8
+                return lastPlayedDate === today;
+            }
+
+            startBtn.addEventListener('click', function () {
+                if (cartItems.length === 0) {
+                    alert('購物車是空的，是要免單什麼？快去裝滿！');
+                    return;
+                }
+
+                if (checkTodayPlayed()) {
+                    alert('⚠️ 偵測到今日已進行過愛國挑戰！\n\n根據防弊政策，本挑戰「每日限答一次」。\n明天再來展現你的台灣價值吧！');
+                    return;
+                }
+
+                // 隨機選一題
+                const randomQuiz = quizBank[Math.floor(Math.random() * quizBank.length)];
+
+                startBtn.style.display = 'none';
+                quizBox.style.display = 'block';
+                quizQuestion.textContent = randomQuiz.q;
+                quizOptions.innerHTML = '';
+
+                randomQuiz.a.forEach((opt, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'quiz-option';
+                    btn.textContent = opt;
+                    btn.addEventListener('click', function () {
+                        // 記錄今日已挑戰
+                        const today = new Date().toLocaleDateString('zh-TW');
+                        localStorage.setItem('lastQuizDate', today);
+
+                        quizBox.style.display = 'none';
+                        quizStatus.style.display = 'block';
+
+                        if (index === randomQuiz.correct) {
+                            isFree = true;
+                            updateTotalDisplay();
+                            quizStatus.style.color = '#008000';
+                            quizStatus.innerHTML = `🎉 恭喜答對！ <br><span style="font-size:14px;">${randomQuiz.correctMsg}</span>`;
+                        } else {
+                            quizStatus.style.color = '#FF0000';
+                            quizStatus.innerHTML = `😢 答錯了！您是中共同路人嗎？ <br><span style="font-size:14px;">${randomQuiz.wrongMsg}</span><br>（今天已無機會，請按原價結帳支持台灣！）`;
+                        }
+                    });
+                    quizOptions.appendChild(btn);
+                });
+            });
+
+            /* ==========================================
+               送出結帳訂單 邏輯
+               ========================================== */
+            document.getElementById('submit-btn').addEventListener('click', function () {
+                if (cartItems.length === 0) {
+                    alert('沒有加值項目！');
+                    return;
+                }
+
+                const paymentMethod = document.querySelector('input[name="payment"]:checked');
+                let paymentName = paymentMethod ? paymentMethod.nextElementSibling.querySelector('.payment-label').textContent : '未知支付';
+
+                let finalAmount = isFree ? 0 : totalAmount;
+
+                alert(`🇹🇼 訂單已安全送出！ 🇹🇼\n\n付款方式：${paymentName}\n實付金額：${finalAmount} 元\n\n系統已偵測到您的澎湃愛國心！\n物資（或台灣價值）將以最快速度透過民主通道送達！\n攜手守護民主，有你真好！🤝`);
+
+                // 結帳成功，清空購物車
+                localStorage.removeItem('shopCart');
+                window.location.href = 'index.html'; // 導回首頁
+            });
+        });
+    </script>
+</body>
+
+</html>

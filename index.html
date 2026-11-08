@@ -24,17 +24,16 @@
             position: absolute;
             left: 0px;
             width: 200px;
-            font-family: 'sung';
+            font-family: 'sung' !important;
             background-color: crimson;
             color: black;
-            font-family: 'sung';
             font-weight: bold;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        #nav img{
+        #nav img {
             width: 100%;
             height: 50px;
         }
@@ -68,21 +67,64 @@
         }
 
         #TWtitle {
-            text-shadow: 5px 5px 10px white;
             background-image: linear-gradient(40deg, red, yellow, blue, purple, red);
+        }
+
+        #TWtitle img {
+            filter: drop-shadow(5px 5px 10px white);
+        }
+
+        #jumpscare {
+            display: block;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            height: 400px;
+            width: 800px;
+            background-image: url('imgs/images.png');
+        }
+
+        #jumpscare:hover {
+            background-image: url('imgs/SMILE.png');
+        }
+
+        #布告欄container {
+            background-color: azure;
+        }
+
+        #布告欄 {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            color: black;
+        }
+
+        #布告欄 .post {
+            width: 100%;
+            border-top: black 1px solid;
+            border-bottom: black 1px solid;
         }
     </style>
 </head>
 
-<body background="imgs/flag.png" text="0000FF">
-    <h1>
+<body background="imgs/flag.png" text="#0000FF">
+    <!-- <h1>
         <div id="TWtitle">
             <b><i>歡迎光臨~台灣價值資訊網~~~</i></b>
         </div>
-    </h1>
+    </h1> -->
+    <div id="TWtitle">
+        <img src="imgs/title.png" width="100%" height="100%">
+    </div>
+    <div style="text-align: center; font-size: 18px; margin: 20px 0;">
+        你是第 <span
+            style="background: black; color: #00FF00; padding: 2px 8px; border: 2px inset gray; font-family: monospace;">008964</span>
+        位愛台灣的熱血同胞！
+    </div>
+    <audio src="media/good.mp3" type="audio/mpeg" autoplay loop></audio>
     <!-- <video controls="true" autoplay="true" name="media" loop="true" hidden="true">
         <source src="media/good.mp3" type="audio/mpeg">
     </video> -->
+    <button id="unmute">解除靜音</button>
 
     <nav id="nav">
         <ul>
@@ -100,7 +142,7 @@
     </nav>
     <section>
         <marquee scrollamount="10"><i>
-                <div style="font-family:sung;">
+                <div style="font-family:sung; font-weight: bolder;">
                     <font size=5>
                         <font color="#0000C0">台</font>
                         <font color="#0013AD">灣</font>
@@ -119,8 +161,11 @@
                 </div>
             </i></marquee>
         <img src="imgs/love_taiwan.png" width="50%" height="50%"><img src="imgs/R.gif" /><br>
-        <a href="https://youtu.be/dQw4w9WgXcQ?si=c7dzOiFXVxV2_-49"> <img alt="我愛台灣" src="imgs/images.png" height="400"
-                width="800"></a>
+        <a alt="我愛台灣" href="https://youtu.be/dQw4w9WgXcQ?si=c7dzOiFXVxV2_-49" id="jumpscare"></a>
+        <div id="布告欄container">
+            <h2 style="font-weight: bolder; font-size: 3em; margin: 0;">最新消息</h2>
+            <div id="布告欄"></div>
+        </div>
         <img src="imgs/main.png">
         <img src="imgs/4963515_1.jpg" width="200" height="500">
         <img src="imgs/image0.gif" width="200" height="500">
@@ -143,7 +188,43 @@
             title="YouTube video player" frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        <img src="imgs/nice.png">
+        <img style="image-rendering: pixelated; image-rendering: crisp-edges; width: 500px;" src="imgs/nice.png">
     </section>
-    <p style="color:gray;text-align: center; background: white; width: 100%; height: 30px;">非許公覺爵版權所有，未經授權即可轉載</p>
+    <p
+        style="color:gray;text-align: center; background: white; width: 100%; height: 30px; padding: 20px 0; font-size: 2em; margin: 0;">
+        非許公覺爵版權所有，未經授權即可轉載</p>
+    <script>
+        const 公告 = [
+            {
+                標題: "【系統升級】台灣價值檢測演算法全面升級至 v4.0",
+                內容: "本次更新大幅強化對中共同路人與在地協力者的辨識率，若您的台灣價值低於標準值，請立即重讀民主大補帖！"
+            },
+            {
+                標題: "【嚴正聲明】本站伺服器絕無使用華為晶片與中資電信",
+                內容: "全站封包皆經由民主防火牆過濾，每一筆流量都散發濃純香的自由空氣，請各位公民安心瀏覽本站。"
+            },
+            {
+                標題: "【政令宣導】辦理115年度「全社會防衛暨民主韌性」素養認證作業說明",
+                內容: "為落實國家安全總體防線，即日起凡完成認知防護線上演練之公民，系統將自動核發數位防衛履歷，以全面提升全民心防能量。"
+            }
+        ];
+        const 布告欄 = document.getElementById("布告欄");
+        公告.forEach(e => {
+            布告欄.insertAdjacentHTML('beforeend', `
+    <div class="post">
+      <h3>${e.標題}</h3>
+      <p>${e.內容}</p>
+    </div>
+  `);
+        });
+
+        const audio = document.querySelector("audio");
+        const unmute = document.getElementById("unmute");
+
+        unmute.addEventListener("click", () => {
+            audio.muted = false;
+            audio.play();
+            unmute.innerText = audio.paused ? "解除靜音" : "🔊 台灣價值音效播放中";
+        });
+    </script>
 </body>

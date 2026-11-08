@@ -1,488 +1,507 @@
+<!DOCTYPE html>
 <html lang="zh-TW">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>shop</title>
-</head>
-<style>
-    @font-face {
-        font-family: doll;
-        src: url("../fonts/Doll.ttf") format("truetype");
-    }
-
-    @font-face {
-        font-family: "kai";
-        src: url("../fonts/TW-Kai-98_1.ttf");
-    }
-
-    @font-face {
-        font-family: "sung";
-        src: url("../fonts/TW-Sung-98_1.ttf");
-    }
-
-    body {
-        background: url("../imgs/flag.png");
-    }
-
-    #TWtitle {
-        color: blue;
-        text-shadow: 5px 5px 10px white;
-        background-image: linear-gradient(40deg, red, yellow, lime, green, blue, purple, red, yellow, lime, green, blue, purple);
-        background-size: 200% 100%;
-        background-position: right;
-        animation: gradientMove 1s linear infinite;
-    }
-
-    @keyframes gradientMove {
-        0% {
-            background-position: left;
+    <style>
+        @font-face {
+            font-family: "kai";
+            src: url("../fonts/TW-Kai-98_1.ttf");
         }
 
-        100% {
+        @font-face {
+            font-family: "sung";
+            src: url("../fonts/TW-Sung-98_1.ttf");
+        }
+
+        body {
+            background: url("../imgs/flag.png");
+            margin: 0;
+            padding: 0;
+        }
+
+        #TWtitle {
+            color: blue;
+            text-shadow: 5px 5px 10px white;
+            background-image: linear-gradient(40deg, red, yellow, lime, green, blue, purple, red, yellow, lime, green, blue, purple);
+            background-size: 200% 100%;
             background-position: right;
-        }
-    }
-
-    @keyframes swing {
-        0% {
-            transform: rotate(0deg);
-            box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
-            filter: brightness(1);
+            animation: gradientMove 1s linear infinite;
         }
 
-        25% {
-            transform: rotate(0.5deg) scale(1.02);
-            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.6);
-            filter: brightness(1.2);
-        }
-
-        33% {
-            transform: rotate(1deg) scale(1.05);
-            box-shadow: 0 0 25px rgba(255, 255, 0, 1), 0 0 35px rgba(255, 215, 0, 0.8);
-            filter: brightness(1.3);
-        }
-
-        50% {
-            transform: rotate(0deg) scale(1.03);
-            box-shadow: 0 0 15px rgba(255, 255, 0, 0.7), 0 0 25px rgba(255, 215, 0, 0.5);
-            filter: brightness(1.1);
-        }
-
-        66% {
-            transform: rotate(-1deg) scale(1.05);
-            box-shadow: 0 0 25px rgba(255, 255, 0, 1), 0 0 35px rgba(255, 215, 0, 0.8);
-            filter: brightness(1.3);
-        }
-
-        75% {
-            transform: rotate(-0.5deg) scale(1.02);
-            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.6);
-            filter: brightness(1.2);
-        }
-
-        100% {
-            transform: rotate(0deg) scale(1.0);
-            box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
-            filter: brightness(1);
-        }
-    }
-
-    #nav {
-        background: white;
-        display: flex;
-        flex-direction: row;
-        left: 0px;
-        width: 100%;
-        font-family: 'sung';
-    }
-
-    #nav span {
-        margin: 0 10px;
-    }
-
-    #side-nav {
-        position: absolute;
-        margin-top: 50px;
-        background: white;
-        display: flex;
-        flex-direction: column;
-        left: 0px;
-        width: 200px;
-        font-family: 'sung';
-    }
-
-    #side-nav ul {
-        list-style-type: square;
-        padding: 0 0 0 20px;
-    }
-
-    #side-nav a {
-        text-decoration: none;
-        color: black;
-    }
-
-    #side-nav a:hover {
-        font-size: 125%;
-        text-decoration: underline;
-    }
-
-    #main-content {
-        margin-left: 200px;
-        color: yellow;
-        background: red;
-        rotate: 0deg;
-        width: calc(100% - 200px - 80px);
-        animation: swing 1s ease-in-out infinite;
-        font-family: 'doll';
-        font-style: italic;
-    }
-
-    #item-list {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 10px;
-        margin-left: 200px;
-        background: white;
-        width: calc(100% - 200px);
-        font-family: 'kai';
-    }
-
-    .item {
-        padding: 10px;
-        border-bottom: 1px solid #ccc;
-        height: auto;
-        min-height: 300px;
-    }
-
-    .item img {
-        width: 200px;
-        height: 200px;
-    }
-
-    .item h2 {
-        font-size: 30px;
-        margin: 0;
-    }
-
-    .item h3 {
-        font-size: 20px;
-        margin: 0;
-    }
-
-    .original-price {
-        text-decoration: line-through;
-        color: #999;
-        font-size: 16px;
-        margin-right: 10px;
-    }
-
-    .discount-price {
-        color: #FF0000;
-        font-weight: bold;
-    }
-
-    .discount-tag {
-        background-color: #FF4444;
-        color: white;
-        padding: 2px 8px;
-        border-radius: 12px;
-        font-size: 14px;
-        margin-left: 10px;
-        display: inline-block;
-    }
-
-    .buy-button {
-        position: relative;
-        width: 150px;
-        display: inline-block;
-        padding: 10px 16px;
-        font-size: 15px;
-        font-weight: 600;
-        font-family: "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
-        color: #ffffff;
-        background: linear-gradient(180deg,
-                rgba(255, 255, 255, 0.7) 0%,
-                rgba(255, 255, 255, 0.3) 49%,
-                rgba(255, 255, 255, 0) 50%),
-            linear-gradient(180deg,
-                rgb(18, 186, 127) 20%,
-                rgb(44, 236, 143) 100%);
-        border: 1px solid rgba(255, 255, 255, 0.35);
-        border-radius: 10px;
-        box-shadow: 0 2px 4px rgba(30, 255, 98, 0.294), inset 0 -2px 0 rgba(0, 0, 0, 0.08);
-        cursor: pointer;
-        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
-        transition: transform 0.14s ease, box-shadow 0.14s ease, background 0.14s ease, filter 0.14s ease;
-        margin-top: 8px;
-        outline: none;
-    }
-
-    .buy-button:hover {
-        filter: brightness(1.05);
-        transform: translateY(-3px);
-        box-shadow: 0 6px 8px rgba(98, 255, 106, 0.44), inset 0 -2px 0 rgba(0, 0, 0, 0.06);
-    }
-
-    .buy-button:active {
-        transform: translateY(-1px);
-        box-shadow: 0 0 6px rgba(0, 255, 21, 0.165), inset 0 2px 4px rgba(0, 0, 0, 0.22);
-    }
-
-    /*.buy-button:focus {
-        box-shadow: none;
-    }*/
-
-    #uselessRobotIcon {
-        display: block;
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 80px;
-        height: 80px;
-        border-radius: 100%;
-        background-color: white;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        z-index: 1;
-    }
-
-    #q {
-        display: none;
-        position: fixed;
-        bottom: 60px;
-        right: 100px;
-        width: 250px;
-        height: 100px;
-    }
-
-    #uselessRobotIcon:hover+#q {
-        display: block;
-    }
-</style>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const items = [
-            {
-                picture: "imgs/taiwan_chicken_steak.png",
-                name: "台灣雞排", price: 888,
-                description: "美味的台灣雞排",
-                discount: 0.8
-            },
-            {
-                picture: "imgs/bubble_tea.webp",
-                name: "大冰奶", price: 66,
-                description: "香濃的早餐店大冰奶茶",
-                discount: 0.9
-            },
-            {
-                picture: "imgs/small_goodz.jpg",
-                name: "台灣小物", price: 33,
-                description: "可愛的台灣小物件"
-            },
-            {
-                picture: "imgs/buy_taiwan_flag.jpg",
-                name: "台灣國旗", price: 2500,
-                description: "象徵台灣的國旗",
-                discount: 0.7
-            },
-            {
-                picture: "imgs/taiwan_peripherals.jpg",
-                name: "周邊", price: 888888,
-                description: "各種周邊商品",
-                discount: 0.5
-            },
-            {
-                picture: "imgs/tsmc.webp",
-                name: "台積電", price: 31120000000000,
-                description: "？？？？？？"
-            },
-            {
-                picture: "",
-                name: "元大台灣50", price: 53,
-                description: "0050"
-            },
-            {
-                picture: "imgs/taiwan_toast.jpg",
-                name: "台灣厚片", price: 45,
-                description: "經典早餐厚片吐司"
-            },
-            {
-                picture: "imgs/sun_cake.jpg",
-                name: "太陽餅", price: 120,
-                description: "台中名產太陽餅",
-                discount: 0.85
-            },
-            {
-                picture: "imgs/taiwan_pineapple_cake.jpg",
-                name: "鳳梨酥", price: 250,
-                description: "台灣伴手禮鳳梨酥",
-                discount: 0.75
-            },
-            {
-                picture: "imgs/taiwan_umbrella.jpg",
-                name: "台灣傘", price: 399,
-                description: "台灣設計雨傘"
-            },
-            {
-                picture: "imgs/taiwan_train_ticket.jpg",
-                name: "台鐵車票", price: 88,
-                description: "台灣鐵路紀念票",
-                discount: 0.6
-            },
-            {
-                picture: "imgs/taiwan_mask.jpg",
-                name: "台灣口罩", price: 10,
-                description: "MIT醫療口罩",
-                discount: 0.5
-            },
-            {
-                picture: "imgs/taiwan_mochi.jpg",
-                name: "台灣麻糬", price: 60,
-                description: "花蓮名產麻糬"
-            },
-            {
-                picture: "imgs/taiwan_biscuit.jpg",
-                name: "牛舌餅", price: 80,
-                description: "宜蘭名產牛舌餅"
-            },
-            {
-                picture: "imgs/taiwan_red_tea.jpg",
-                name: "台灣紅茶", price: 35,
-                description: "台灣手搖紅茶"
-            },
-            {
-                picture: "imgs/taiwan_stinky_tofu.jpg",
-                name: "臭豆腐", price: 70,
-                description: "夜市必吃臭豆腐"
-            },
-            {
-                picture: "imgs/taiwan_rice_ball.jpg",
-                name: "台灣飯糰", price: 35,
-                description: "早餐必備台灣飯糰"
-            },
-            {
-                picture: "imgs/taiwan_pearl_barley.jpg",
-                name: "墾丁滷味", price: 2000,
-                description: "吃到你家破產 :)",
-                discount: 20
-            },
-            {
-                picture: "imgs/taiwan_peanut_candy.jpg",
-                name: "花生糖", price: 55,
-                description: "台灣古早味花生糖"
-            },
-            {
-                picture: "imgs/taiwan_tea_egg.jpg",
-                name: "茶葉蛋", price: 18,
-                description: "便利商店茶葉蛋"
-            },
-            {
-                picture: "imgs/taiwan_sausage.jpg",
-                name: "台灣香腸", price: 30,
-                description: "夜市台灣香腸"
-            },
-            {
-                picture: "imgs/taiwan_ice_cream.jpg",
-                name: "叭噗冰淇淋", price: 250,
-                description: "台灣古早味叭噗"
-            },
-            {
-                picture: "imgs/taiwan_milk_fish.jpg",
-                name: "阿堂鹹粥", price: 300,
-                description: "阿堂鹹粥「虱目魚賣一片虧一片」？在地人揭真相：算算就知答案"
-            },
-            {
-                picture: "imgs/taiwan_egg_pancake.jpg",
-                name: "蛋餅", price: 35,
-                description: "台灣早餐蛋餅"
-            },
-            {
-                picture: "imgs/taiwan_braised_pork_rice.jpg",
-                name: "滷肉飯", price: 45,
-                description: "台灣經典滷肉飯"
-            },
-            {
-                picture: "imgs/taiwan_scallion_pancake.jpg",
-                name: "蔥油餅", price: 30,
-                description: "台灣路邊蔥油餅"
-            },
-            {
-                picture: "",
-                name: "檯帖古早經濟便當", price: 60,
-                description: ""
-            },
-            {
-                picture: "",
-                name: "檯淹海洋鹼性離子水", price: 29,
-                description: ""
-            },
-            {
-                picture: "",
-                name: "蘋果西打", price: 30,
-                description: ""
-            },
-            {
-                picture: "imgs/gogont.png",
-                name: "狗狗肉 Premium", price: 88800,
-                description: "\"品牌經典之作\""
-            },
-            {
-                picture: "imgs/taiwan_ai_signature.png",
-                name: "Ai~台灣先生親筆簽名", price: 999999999999999,
-                description: "台灣先生親筆簽名，限量發行，絕對收藏價值！",
-                discount: 0.01
-            },
-        ];
-        const shopCart = {
-            items: [],
-            addItem(item) {
-                this.items.push(item);
-                console.log(`購物車已新增商品：${item.name}`);
-                this.save();
-            },
-            removeItem(index) {
-                this.items.splice(index, 1);
-                this.save();
-            },
-            clear() {
-                this.items = [];
-                this.save();
-            },
-            getTotal() {
-                return this.items.reduce((total, item) => total + (item.discount ? Math.round(item.price * item.discount) : item.price), 0);
-            },
-            save() {
-                try {
-                    localStorage.setItem('shopCart', JSON.stringify(this.items));
-                } catch (e) {
-                    console.error('儲存購物車失敗', e);
-                }
-            },
-            load() {
-                try {
-                    const raw = localStorage.getItem('shopCart');
-                    if (raw) {
-                        this.items = JSON.parse(raw);
-                    }
-                } catch (e) {
-                    console.error('讀取購物車失敗', e);
-                    this.items = [];
-                }
+        @keyframes gradientMove {
+            0% {
+                background-position: left;
             }
-        };
 
-        // 讀取本機儲存的購物車資料（若有）
-        shopCart.load();
+            100% {
+                background-position: right;
+            }
+        }
 
-        const itemList = document.getElementById("item-list");
-        itemList.innerHTML = "";
-        items.forEach(item => {
-            const container = document.createElement("div");
-            const listItem = document.createElement("h2");
-            const itemDescription = document.createElement("div");
-            const itemImage = document.createElement("img");
-            const itemPrice = document.createElement("h3");
-            let price = item.price;
+        @keyframes swing {
+            0% {
+                transform: rotate(0deg);
+                box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+                filter: brightness(1);
+            }
+
+            25% {
+                transform: rotate(0.5deg) scale(1.02);
+                box-shadow: 0 0 20px rgba(255, 255, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.6);
+                filter: brightness(1.2);
+            }
+
+            33% {
+                transform: rotate(1deg) scale(1.05);
+                box-shadow: 0 0 25px rgba(255, 255, 0, 1), 0 0 35px rgba(255, 215, 0, 0.8);
+                filter: brightness(1.3);
+            }
+
+            50% {
+                transform: rotate(0deg) scale(1.03);
+                box-shadow: 0 0 15px rgba(255, 255, 0, 0.7), 0 0 25px rgba(255, 215, 0, 0.5);
+                filter: brightness(1.1);
+            }
+
+            66% {
+                transform: rotate(-1deg) scale(1.05);
+                box-shadow: 0 0 25px rgba(255, 255, 0, 1), 0 0 35px rgba(255, 215, 0, 0.8);
+                filter: brightness(1.3);
+            }
+
+            75% {
+                transform: rotate(-0.5deg) scale(1.02);
+                box-shadow: 0 0 20px rgba(255, 255, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.6);
+                filter: brightness(1.2);
+            }
+
+            100% {
+                transform: rotate(0deg) scale(1.0);
+                box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+                filter: brightness(1);
+            }
+        }
+
+        #nav {
+            background: white;
+            display: flex;
+            flex-direction: row;
+            left: 0px;
+            width: 100%;
+            font-family: 'sung';
+        }
+
+        #nav span {
+            margin: 0 10px;
+        }
+
+        #side-nav {
+            position: absolute;
+            margin-top: 50px;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            left: 0px;
+            width: 200px;
+            font-family: 'sung';
+        }
+
+        #side-nav ul {
+            list-style-type: square;
+            padding: 0 0 0 20px;
+        }
+
+        #side-nav a {
+            text-decoration: none;
+            color: black;
+        }
+
+        #side-nav a:hover {
+            font-size: 125%;
+            text-decoration: underline;
+        }
+
+        #main-content {
+            margin-left: 200px;
+            color: yellow;
+            background: red;
+            rotate: 0deg;
+            width: calc(100% - 280px);
+            animation: swing 1s ease-in-out infinite;
+            font-family: 'sung';
+            font-style: italic;
+        }
+
+        #item-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-left: 200px;
+            background: white;
+            width: calc(100% - 200px);
+            font-family: 'kai';
+            box-sizing: border-box;
+            padding: 10px;
+        }
+
+        .item {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            height: auto;
+            min-height: 300px;
+        }
+
+        .item img {
+            width: 200px;
+            height: 200px;
+            display: block;
+            border: black 1px solid;
+        }
+
+        .item h2 {
+            font-size: 30px;
+            margin: 0;
+        }
+
+        .item h3 {
+            font-size: 20px;
+            margin: 0;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        .discount-price {
+            color: #FF0000;
+            font-weight: bold;
+        }
+
+        .discount-tag {
+            background-color: #FF4444;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 14px;
+            margin-left: 10px;
+            display: inline-block;
+        }
+
+        /* 數量控制器樣式 */
+        .quantity-controller {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .qty-btn {
+            width: 30px;
+            height: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            background: #f0f0f0;
+            border: 1px solid #999;
+            border-radius: 4px;
+        }
+
+        .qty-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .qty-input {
+            width: 60px;
+            height: 26px;
+            text-align: center;
+            font-size: 16px;
+            font-family: inherit;
+            border: 1px solid #999;
+            border-radius: 4px;
+        }
+
+        .buy-button {
+            position: relative;
+            background-image: url('/imgs/buy-button.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            border: none;
+            background-color: transparent;
+            width: 200px;
+            height: 80px;
+            cursor: pointer;
+            transition: transform 0.14s ease, filter 0.14s ease;
+            margin-top: 8px;
+            outline: none;
+        }
+
+        .buy-button:hover {
+            filter: brightness(1.10);
+        }
+
+        .buy-button:active {
+            transform: translateY(2px) scale(0.98);
+            filter: brightness(0.9);
+        }
+
+        #uselessRobotIcon {
+            display: block;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 80px;
+            height: 80px;
+            border-radius: 100%;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        #q {
+            display: none;
+            position: fixed;
+            bottom: 60px;
+            right: 100px;
+            width: 250px;
+            height: 100px;
+        }
+
+        #uselessRobotIcon:hover+#q {
+            display: block;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const items = [
+                {
+                    picture: "imgs/taiwan_chicken_steak.png",
+                    name: "台灣雞排", price: 888,
+                    description: "美味的台灣雞排",
+                    discount: 0.8
+                },
+                {
+                    picture: "imgs/bubble_tea.webp",
+                    name: "大冰奶", price: 66,
+                    description: "香濃的早餐店大冰奶茶",
+                    discount: 0.9
+                },
+                {
+                    picture: "imgs/small_goodz.jpg",
+                    name: "台灣小物", price: 33,
+                    description: "可愛的台灣小物件"
+                },
+                {
+                    picture: "imgs/buy_taiwan_flag.jpg",
+                    name: "台灣國旗", price: 2500,
+                    description: "象徵台灣的國旗",
+                    discount: 0.7
+                },
+                {
+                    picture: "imgs/taiwan_peripherals.jpg",
+                    name: "周邊", price: 888888,
+                    description: "各種周邊商品",
+                    discount: 0.5
+                },
+                {
+                    picture: "imgs/tsmc.webp",
+                    name: "台積電", price: 31120000000000,
+                    description: "？？？？？？"
+                },
+                {
+                    picture: "imgs/0050.png",
+                    name: "元大台灣50", price: 53,
+                    description: "0050"
+                },
+                {
+                    picture: "imgs/tost.png",
+                    name: "台灣厚片", price: 45,
+                    description: "經典早餐厚片吐司"
+                },
+                {
+                    picture: "imgs/sun_cake.jpg",
+                    name: "太陽餅", price: 120,
+                    description: "台中名產太陽餅",
+                    discount: 0.85
+                },
+                {
+                    picture: "",
+                    name: "鳳梨酥", price: 250,
+                    description: "台灣伴手禮鳳梨酥",
+                    discount: 0.75
+                },
+                {
+                    picture: "",
+                    name: "台灣傘", price: 399,
+                    description: "台灣設計雨傘"
+                },
+                {
+                    picture: "imgs/tikcet.png",
+                    name: "台鐵車票", price: 88,
+                    description: "台灣鐵路紀念票 (成功-追分)",
+                    discount: 0.6
+                },
+                {
+                    picture: "imgs/mask.png",
+                    name: "台灣口罩", price: 10,
+                    description: "MIT醫療口罩",
+                    discount: 0.5
+                },
+                {
+                    picture: "",
+                    name: "台灣麻糬", price: 60,
+                    description: "花蓮名產麻糬"
+                },
+                {
+                    picture: "",
+                    name: "牛舌餅", price: 80,
+                    description: "宜蘭名產牛舌餅"
+                },
+                {
+                    picture: "",
+                    name: "台灣紅茶", price: 35,
+                    description: "台灣手搖紅茶"
+                },
+                {
+                    picture: "",
+                    name: "臭豆腐", price: 70,
+                    description: "夜市必吃臭豆腐"
+                },
+                {
+                    picture: "",
+                    name: "台灣飯糰", price: 35,
+                    description: "早餐必備台灣飯糰"
+                },
+                {
+                    picture: "",
+                    name: "墾丁滷味", price: 2000,
+                    description: "吃到你家破產 :)",
+                    discount: 20
+                },
+                {
+                    picture: "",
+                    name: "花生糖", price: 55,
+                    description: "台灣古早味花生糖"
+                },
+                {
+                    picture: "imgs/egg.png",
+                    name: "茶葉蛋", price: 18,
+                    description: "便利商店茶葉蛋（？"
+                },
+                {
+                    picture: "imgs/taiwan_sausage.png",
+                    name: "台灣香腸", price: 30,
+                    description: "夜市台灣香腸"
+                },
+                {
+                    picture: "imgs/AI♡SCREAM.png",
+                    name: "叭噗冰淇淋", price: 250,
+                    description: "台灣古早味叭噗"
+                },
+                {
+                    picture: "imgs/阿堂鹹粥.png",
+                    name: "阿堂鹹粥", price: 300,
+                    description: "阿堂鹹粥「虱目魚賣一片虧一片」？在地人揭真相：算算就知答案"
+                },
+                {
+                    picture: "",
+                    name: "蛋餅", price: 35,
+                    description: "台灣早餐蛋餅"
+                },
+                {
+                    picture: "",
+                    name: "滷肉飯", price: 45,
+                    description: "台灣經典滷肉飯"
+                },
+                {
+                    picture: "",
+                    name: "蔥油餅", price: 30,
+                    description: "台灣路邊蔥油餅"
+                },
+                {
+                    picture: "",
+                    name: "檯帖古早經濟便當", price: 60,
+                    description: ""
+                },
+                {
+                    picture: "imgs/watero.png",
+                    name: "檯淹海洋鹼性離子水", price: 29,
+                    description: ""
+                },
+                {
+                    picture: "",
+                    name: "蘋果西打", price: 30,
+                    description: ""
+                },
+                {
+                    picture: "imgs/gogont.png",
+                    name: "狗狗肉 Premium", price: 88800,
+                    description: "\"品牌經典之作\""
+                },
+                {
+                    picture: "imgs/taiwan_ai_signature.png",
+                    name: "Ai~台灣先生親筆簽名", price: 999999999999999,
+                    description: "台灣先生親筆簽名，限量發行，絕對收藏價值！",
+                    discount: 0.01
+                }
+            ];
+
+            const shopCart = {
+                items: [],
+                addItem(item, quantity = 1) {
+                    const existIndex = this.items.findIndex(it => it.name === item.name);
+                    if (existIndex > -1) {
+                        this.items[existIndex].quantity = (this.items[existIndex].quantity || 1) + quantity;
+                    } else {
+                        this.items.push({ ...item, quantity: quantity });
+                    }
+                    console.log(`購物車已新增：${item.name} × ${quantity}`);
+                    this.save();
+                },
+                removeItem(index) {
+                    this.items.splice(index, 1);
+                    this.save();
+                },
+                clear() {
+                    this.items = [];
+                    this.save();
+                },
+                getTotal() {
+                    return this.items.reduce((total, item) => {
+                        const unitPrice = item.discount ? Math.round(item.price * item.discount) : item.price;
+                        return total + (unitPrice * (item.quantity || 1));
+                    }, 0);
+                },
+                save() {
+                    try {
+                        localStorage.setItem('shopCart', JSON.stringify(this.items));
+                    } catch (e) {
+                        console.error('儲存購物車失敗', e);
+                    }
+                },
+                load() {
+                    try {
+                        const raw = localStorage.getItem('shopCart');
+                        if (raw) {
+                            this.items = JSON.parse(raw);
+                        }
+                    } catch (e) {
+                        console.error('讀取購物車失敗', e);
+                        this.items = [];
+                    }
+                }
+            };
+
+            shopCart.load();
+
+            const itemList = document.getElementById("item-list");
+            itemList.innerHTML = "";
+
             function formatChineseNumber(num) {
                 const digits = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
                 if (num === 0) return digits[0];
@@ -490,64 +509,56 @@
                 let result = "";
                 let remain = num;
 
-                // 處理兆
                 if (remain >= 1000000000000) {
                     let zhao = Math.floor(remain / 1000000000000);
                     result += convertUnderTenThousand(zhao) + "兆";
                     remain = remain % 1000000000000;
                 }
 
-                // 處理億
                 if (remain >= 100000000) {
                     let yi = Math.floor(remain / 100000000);
                     result += convertUnderTenThousand(yi) + "億";
                     remain = remain % 100000000;
                 }
 
-                // 處理萬
                 if (remain >= 10000) {
                     let wan = Math.floor(remain / 10000);
                     result += convertUnderTenThousand(wan) + "萬";
                     remain = remain % 10000;
                 }
 
-                // 處理萬以下
                 if (remain > 0) {
                     result += convertUnderTenThousand(remain);
                 }
 
-                function convertUnderTenThousand(num) {
-                    if (num === 0) return "";
+                function convertUnderTenThousand(n) {
+                    if (n === 0) return "";
                     let str = "";
 
-                    // 千
-                    if (num >= 1000) {
-                        let qian = Math.floor(num / 1000);
+                    if (n >= 1000) {
+                        let qian = Math.floor(n / 1000);
                         str += digits[qian] + "千";
-                        num = num % 1000;
+                        n = n % 1000;
                     }
 
-                    // 百
-                    if (num >= 100) {
-                        let bai = Math.floor(num / 100);
+                    if (n >= 100) {
+                        let bai = Math.floor(n / 100);
                         str += digits[bai] + "百";
-                        num = num % 100;
+                        n = n % 100;
                     }
 
-                    // 十
-                    if (num >= 10) {
-                        let shi = Math.floor(num / 10);
+                    if (n >= 10) {
+                        let shi = Math.floor(n / 10);
                         if (shi === 1 && str === "") {
-                            str += "十"; // 開頭的十不加"一"
+                            str += "十";
                         } else {
                             str += digits[shi] + "十";
                         }
-                        num = num % 10;
+                        n = n % 10;
                     }
 
-                    // 個位
-                    if (num > 0) {
-                        str += digits[num];
+                    if (n > 0) {
+                        str += digits[n];
                     }
 
                     return str;
@@ -555,70 +566,124 @@
 
                 return result;
             }
-            let originalPrice = formatChineseNumber(price);
-            let discountedPrice = "";
-            let discountTag = "";
 
-            if (item.discount) {
-                let newPrice = Math.round(price * item.discount);
-                discountedPrice = formatChineseNumber(newPrice);
-                let discountPercent = Math.round(item.discount * 10);
-                discountTag = `現正${discountPercent}折`;
-            }
+            items.forEach(item => {
+                const container = document.createElement("div");
+                const listItem = document.createElement("h2");
+                const itemDescription = document.createElement("div");
+                const itemImage = document.createElement("img");
+                const itemPrice = document.createElement("h3");
+                let price = item.price;
 
-            itemImage.src = item.picture;
-            itemImage.alt = item.name;
-            container.classList.add("item");
-            listItem.textContent = `${item.name}`;
-            itemDescription.textContent = item.description;
+                let originalPrice = formatChineseNumber(price);
+                let discountedPrice = "";
+                let discountTag = "";
 
-            if (item.discount) {
-                itemPrice.innerHTML = `
-                    <span class="original-price">${originalPrice}元</span>
-                    <span class="discount-price">${discountedPrice}元</span>
-                    <span class="discount-tag">${discountTag}</span>
-                `;
-            } else {
-                itemPrice.innerHTML = `<font color="#FF0000">${originalPrice}</font>元`;
-            }
-            container.appendChild(itemImage);
-            container.appendChild(listItem);
-            container.appendChild(itemPrice);
-            container.appendChild(itemDescription);
-            // 顯示的價格（若有折扣則顯示折後價）
-            let displayPrice = item.discount ? Math.round(price * item.discount) : price;
-
-            const buyBtn = document.createElement('button');
-            buyBtn.textContent = '購買';
-            buyBtn.className = 'buy-button';
-            buyBtn.setAttribute('data-name', item.name);
-            buyBtn.setAttribute('data-price', displayPrice);
-            buyBtn.addEventListener('click', function () {
-                if (confirm(`確認購買 ${item.name} 嗎？價格：${displayPrice} 元`)) {
-                    alert(`已將${item.name}加入購物車`);
-                    shopCart.addItem(item);
-                    // 若要導向結帳頁面，請取消下一行註解並修改為實際結帳頁
-                    // window.location.href = 'checkout.html';
+                if (item.discount) {
+                    let newPrice = Math.round(price * item.discount);
+                    discountedPrice = formatChineseNumber(newPrice);
+                    let discountPercent = Math.round(item.discount * 10);
+                    discountTag = `現正${discountPercent}折`;
                 }
+
+                itemImage.src = item.picture || "/imgs/sub3.gif";
+                itemImage.alt = item.name;
+                container.classList.add("item");
+                listItem.textContent = `${item.name}`;
+                itemDescription.textContent = item.description;
+
+                if (item.discount) {
+                    itemPrice.innerHTML = `
+                        <span class="original-price">${originalPrice}元</span>
+                        <span class="discount-price">${discountedPrice}元</span>
+                        <span class="discount-tag">${discountTag}</span>
+                    `;
+                } else {
+                    itemPrice.innerHTML = `<font color="#FF0000">${originalPrice}</font>元`;
+                }
+
+                container.appendChild(itemImage);
+                container.appendChild(listItem);
+                container.appendChild(itemPrice);
+                container.appendChild(itemDescription);
+
+                let displayPrice = item.discount ? Math.round(price * item.discount) : price;
+
+                // 數量調整控制器
+                const qtyContainer = document.createElement('div');
+                qtyContainer.className = 'quantity-controller';
+
+                const minusBtn = document.createElement('button');
+                minusBtn.type = 'button';
+                minusBtn.className = 'qty-btn';
+                minusBtn.textContent = '－';
+
+                const qtyInput = document.createElement('input');
+                qtyInput.type = 'number';
+                qtyInput.className = 'qty-input';
+                qtyInput.value = 1;
+                qtyInput.min = 1;
+
+                const plusBtn = document.createElement('button');
+                plusBtn.type = 'button';
+                plusBtn.className = 'qty-btn';
+                plusBtn.textContent = '＋';
+
+                minusBtn.addEventListener('click', () => {
+                    let val = parseInt(qtyInput.value, 10) || 1;
+                    if (val > 1) {
+                        qtyInput.value = val - 1;
+                    }
+                });
+
+                plusBtn.addEventListener('click', () => {
+                    let val = parseInt(qtyInput.value, 10) || 1;
+                    qtyInput.value = val + 1;
+                });
+
+                qtyInput.addEventListener('change', () => {
+                    let val = parseInt(qtyInput.value, 10);
+                    if (isNaN(val) || val < 1) {
+                        qtyInput.value = 1;
+                    }
+                });
+
+                qtyContainer.appendChild(minusBtn);
+                qtyContainer.appendChild(qtyInput);
+                qtyContainer.appendChild(plusBtn);
+                container.appendChild(qtyContainer);
+
+                // 購買按鈕
+                const buyBtn = document.createElement('button');
+                buyBtn.className = 'buy-button';
+                buyBtn.setAttribute('data-name', item.name);
+                buyBtn.setAttribute('data-price', displayPrice);
+                buyBtn.addEventListener('click', function () {
+                    const count = parseInt(qtyInput.value, 10) || 1;
+                    const subtotal = displayPrice * count;
+                    if (confirm(`確認購買 ${count} 份【${item.name}】嗎？\n總計金額：${subtotal} 元`)) {
+                        alert(`已將 ${count} 份【${item.name}】加入台灣價值購物車！`);
+                        shopCart.addItem(item, count);
+                    }
+                });
+
+                container.appendChild(buyBtn);
+                itemList.appendChild(container);
             });
-
-            container.appendChild(buyBtn);
-
-            itemList.appendChild(container);
         });
-    });
-</script>
+    </script>
+</head>
 
 <body>
-    <img id="uselessRobotIcon" src="../aa/item/man.png"></img>
-    <img id="q" src="imgs/question.png"></img>
+    <img id="uselessRobotIcon" src="../aa/item/man.png" alt="robot">
+    <img id="q" src="imgs/question.png" alt="question">
     <h1>
         <div style="font-family:kai;" id="TWtitle">
             <b><i>歡迎光臨~台灣購物網~~~</i></b>
         </div>
     </h1>
     <nav id="nav">
-        <a href="index.html">首頁</a>
+        <a href="../index.html">首頁</a>
         <span>|</span>
         <a href="about.html">關於我們</a>
         <span>|</span>
@@ -630,7 +695,7 @@
         <span>|</span>
         <a href="cart.html">購物車</a>
     </nav>
-    <img src="../imgs/love_taiwan.png" alt="我愛台灣" style="position: absolute;width: 200px;">
+    <img src="../imgs/love_taiwan.png" alt="我愛台灣" style="position: absolute; width: 200px;">
     <nav id="side-nav">
         <ul>
             <li><a href="taiwan-chicken-steak.html">台灣雞排</a></li>
@@ -641,7 +706,7 @@
         </ul>
     </nav>
     <div id="main-content">
-        <h2>- 最新消息！！！！！！！！！ ------------------</h2>
+        <h2>最新消息！！！！！！！！！ ------------------</h2>
         <marquee scrollamount="10">歡迎來到台灣購物網！我們提供最新的台灣商品資訊，讓您隨時掌握購物動態。</marquee>
     </div>
     <div id="item-list">
