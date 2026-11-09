@@ -228,7 +228,7 @@
 
         .buy-button {
             position: relative;
-            background-image: url('/imgs/buy-button.png');
+            background-image: url('../imgs/buy-button.png');
             background-size: 100% 100%;
             background-repeat: no-repeat;
             border: none;
@@ -586,7 +586,7 @@
                     discountTag = `現正${discountPercent}折`;
                 }
 
-                itemImage.src = item.picture || "/imgs/sub3.gif";
+                itemImage.src = item.picture || "../imgs/sub3.gif";
                 itemImage.alt = item.name;
                 container.classList.add("item");
                 listItem.textContent = `${item.name}`;

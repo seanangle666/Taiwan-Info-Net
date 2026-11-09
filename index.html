@@ -124,7 +124,9 @@
     <!-- <video controls="true" autoplay="true" name="media" loop="true" hidden="true">
         <source src="media/good.mp3" type="audio/mpeg">
     </video> -->
-    <button id="unmute">解除靜音</button>
+    <button id="unmute" style="background-color: transparent; border: none; cursor: pointer;">
+        <img src="imgs/unmute.png" alt="解除靜音">
+    </button>
 
     <nav id="nav">
         <ul>
@@ -224,7 +226,7 @@
         unmute.addEventListener("click", () => {
             audio.muted = false;
             audio.play();
-            unmute.innerText = audio.paused ? "解除靜音" : "🔊 台灣價值音效播放中";
+            unmute.children[0].src = "imgs/unmute2.png";
         });
     </script>
 </body>
